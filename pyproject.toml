@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "tnd"
+version = "0.1.0"
+description = "TND VE widget"
+authors = ["Scott Olesen <ulp7@cdc.gov>"]
+license = "Apache 2"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
