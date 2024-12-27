@@ -26,7 +26,7 @@ If we are to evaluate how well protection can be estimated, we must first define
 
 Protection is the reduction in probability of an adverse outcome due to some intervention.
 
-$$Protection = 1 - \frac{P\left( \text{outcome} \right|intervention)}{P\left( \text{outcome} \right|\sim intervention)}$$
+$$Protection = 1 - \frac{P(outcome|intervention)}{P(outcome| \sim intervention)}$$
 
 We interpret protection at the population level, measured via counts of realized outcomes. Both the adverse outcome and the intervention must be specified.
 
@@ -63,7 +63,7 @@ Our study design of interest is the test-negative design (TND), in which all ind
 
 |                    | Vaccinated | Unvaccinated |
 | ------------------ | ---------- | ------------ |
-| Focal Pathogen     | $C_{FV}$   | $C_FU$       |
+| Focal Pathogen     | $C_{FV}$   | $C_{FU}$       |
 | Non-Focal Pathogen | $C_{NV}$   | $C_{NU}$     |
 
 Because infection is never observed in the absence of ARI, TND cannot decompose infection from severity; it can only address severe infection as one event.
@@ -103,7 +103,7 @@ We have declared several parameters related to vaccine action, which allow a spe
 
 #### Vaccines Correlate with Behavior
 
-Vaccination is not just a cause of immune fortification; it is also a consequence of behavioral choices. For example, we recognize that vaccinated individuals may have a different propensity to seek care in response to ARI compared to unvaccinated individuals (µ~V~ vs. µ~U~). Spoiler: these behavioral differences can ultimately bias TND-derived estimates of protection. So, to start, we remove them via assumptions:
+Vaccination is not just a cause of immune fortification; it is also a consequence of behavioral choices. For example, we recognize that vaccinated individuals may have a different propensity to seek care in response to ARI compared to unvaccinated individuals (µ_V vs. µ_U). Spoiler: these behavioral differences can ultimately bias TND-derived estimates of protection. So, to start, we remove them via assumptions:
 
 - Differences in λ and π with vaccination are entirely immunological, not behavioral.
 - The force of exposure ε does not differ based on vaccination.
@@ -122,18 +122,18 @@ Using our mathematical language, we can write a formula for the precise definiti
 
 $$
 \begin{align*}
-VE &= 1 - \frac{P\left( \text{F} \right|V)}{P\left( \text{F} \right|U)} \\
-&= 1 - \frac{\left( 1 - \varphi \right)\varepsilon_{\text{FV}}\lambda_{\text{FU}}\pi_{\text{FU}} + \varphi\varepsilon_{\text{FV}}\lambda_{\text{FV}}\pi_{\text{FV}}}{\varepsilon_{\text{FU}}\lambda_{\text{FU}}\pi_{\text{FU}}} \\
-&= 1 - \frac{\varepsilon_{\text{FV}}}{\varepsilon_{\text{FU}}}\left( 1 - \varphi + \varphi\theta \right) \\
+VE &= 1 - \frac{P(F|V)}{P(F|U)} \\
+&= 1 - \frac{( 1 - \varphi)\varepsilon_{FV}\lambda_{FU}\pi_{FU} + \varphi\varepsilon_{FV}\lambda_{FV}\pi_{FV}}{\varepsilon_{FU}\lambda_{FU}\pi_{FU}} \\
+&= 1 - \frac{\varepsilon_{FV}}{\varepsilon_{FU}}\left( 1 - \varphi + \varphi\theta \right) \\
 &= \varphi(1 - \theta)
 \end{align*}
 $$
 
 Note the importance of assuming that ε does not depend on vaccination.
 
-We will use the axiom $VE = 1 - \frac{P\left( \text{F} \right|V)}{P\left( F \right|U)}$ to pose candidate formulae of TND data to estimate VE.
+We will use the axiom $VE = 1 - \frac{P(F|V)}{P(F|U)}$ to pose candidate formulae of TND data to estimate VE.
 
-We will use the equality $\text{VE} = \varphi(1 - \theta)$ to verify whether these candidate formulae are correct.
+We will use the equality $VE = \varphi(1 - \theta)$ to verify whether these candidate formulae are correct.
 
 ## Estimating Protection from TND
 
@@ -144,74 +144,74 @@ Attempting to pose a formula for a TND estimate of VE reveals common pitfalls an
 At first, it may appear that the terms of the axiomatic definition of protection are directly available in the TND data. We replace the conditional probabilities using the formula P(AB) = P(A\|B)P(B):
 
 $$
-VE = 1 - \frac{P\left( \text{F} \right|V)}{P\left( \text{F} \right|U)} = 1 - \frac{\frac{P(FV)}{P(V)}}{\frac{P(FU)}{P(U)}}
+VE = 1 - \frac{P(F|V)}{P(F|U)} = 1 - \frac{\frac{P(FV)}{P(V)}}{\frac{P(FU)}{P(U)}}
 $$
 
 Let C represent the counts in each quadrant of the TND data. It may appear that:
 
 $$
-VE = 1 - \frac{\frac{P(FV)}{P(V)}}{\frac{P(FU)}{P(U)}} = 1 - \frac{\frac{C_{\text{FV}}}{(C_{\text{FV}} + C_{\text{NV}})}}{\frac{C_{\text{FU}}}{(C_{\text{FU}} + C_{\text{NU}})}}
+VE = 1 - \frac{\frac{P(FV)}{P(V)}}{\frac{P(FU)}{P(U)}} = 1 - \frac{\frac{C_{FV}}{(C_{FV} + C_{NV})}}{\frac{C_{FU}}{(C_{FU} + C_{NU})}}
 $$
 
-However, this is not true, because $C_{\text{FV}} + C_{\text{NV}} \propto P\left( \text{VandARIandcareseeking} \right) \neq P(V)$. Similarly, $C_{\text{FU}} + C_{\text{NU}} \propto P\left( \text{UandARIandcareseeking} \right) \neq P(U)$.
+However, this is not true, because$C_{FV} + C_{NV} \propto P(V~and~ARI~and~careseeking) \neq P(V)$. Similarly, $C_{FU} + C_{NU} \propto P(U~and~ARI~and~careseeking) \neq P(U)$.
 
 ### Direct Risk Ratio from Counts and Outside Knowledge Fails
 
 To address this pitfall, one may assume that the vaccination rate v is known from other means outside the TND. In this case:
 
 $$
-VE = 1 - \frac{\frac{P\left( \text{FV} \right)}{P\left( V \right)}}{\frac{P\left( \text{FU} \right)}{P\left( U \right)}} = 1 - \frac{\frac{C_{\text{FV}}}{\text{vP}}}{\frac{C_{\text{FU}}}{\left( 1 - v \right)P}}
+VE = 1 - \frac{\frac{P(FV)}{P\left( V \right)}}{\frac{P(FU)}{P\left( U \right)}} = 1 - \frac{\frac{C_{FV}}{vP}}{\frac{C_{FU}}{\left( 1 - v \right)P}}
 $$
 
 According to the assumptions we've made, the cumulative counts of people in the TND at time $t$ will be:
 
-$C_{\text{FV}} = \varepsilon_{\text{FV}}tvP\lbrack\left( 1 - \varphi \right)\lambda_{\text{FU}}\pi_{\text{FU}} + \varphi\lambda_{\text{FV}}\pi_{\text{FV}}\rbrack\mu_{V}$ $C_{\text{FU}} = \varepsilon_{\text{FU}}t\left( 1 - v \right)P\lambda_{\text{FU}}\pi_{\text{FU}}\mu_{U}$
+$C_{FV} = \varepsilon_{FV}tvP\lbrack\left( 1 - \varphi \right)\lambda_{FU}\pi_{FU} + \varphi\lambda_{FV}\pi_{FV}\rbrack\mu_{V}~~~~~C_{FU} = \varepsilon_{FU}t\left( 1 - v \right)P\lambda_{FU}\pi_{FU}\mu_{U}$
 
-$C_{\text{NV}} = \varepsilon_{\text{NV}}\text{tvP}\lambda_{\text{NV}}\pi_{\text{NV}}\mu_{V}$ $C_{\text{NU}} = \varepsilon_{\text{NU}}t(1 - v)P\lambda_{\text{NU}}\pi_{\text{NU}}\mu_{U}$
+$C_{NV} = \varepsilon_{NV}tvP\lambda_{NV}\pi_{NV}\mu_{V}~~~~~C_{NU} = \varepsilon_{NU}t(1 - v)P\lambda_{NU}\pi_{NU}\mu_{U}$
 
 Substituting:
 
 $$
-VE = 1 - \frac{\frac{\varepsilon_{\text{FV}}\text{tvP}\left\lbrack \left( 1 - \varphi \right)\lambda_{\text{FU}}\pi_{\text{FU}} + \varphi\lambda_{\text{FV}}\pi_{\text{FV}} \right\rbrack\mu_{V}}{\text{vP}}}{\frac{\varepsilon_{\text{FU}}t\left( 1 - v \right)P\lambda_{\text{FU}}\pi_{\text{FU}}\mu_{U}}{\left( 1 - v \right)P}} = 1 - \frac{\mu_{V}}{\mu_{U}}\left( 1 - \varphi + \varphi\theta \right)
+VE = 1 - \frac{\frac{\varepsilon_{FV}tvP\left\lbrack \left( 1 - \varphi \right)\lambda_{FU}\pi_{FU} + \varphi\lambda_{FV}\pi_{FV} \right\rbrack\mu_{V}}{vP}}{\frac{\varepsilon_{FU}t\left( 1 - v \right)P\lambda_{FU}\pi_{FU}\mu_{U}}{\left( 1 - v \right)P}} = 1 - \frac{\mu_{V}}{\mu_{U}}\left( 1 - \varphi + \varphi\theta \right)
 $$
 
-Again, note the importance of assuming that ε does not depend on vaccination. Even so, this estimate of VE reduces to the correct value, $\varphi(1 + \theta)$, if and only if µ~V~ = µ~U~, which is not generally true. In other words, the differential propensity to seek care with vaccination status prevents the direct risk ratio from accurately estimating VE.
+Again, note the importance of assuming that ε does not depend on vaccination. Even so, this estimate of VE reduces to the correct value, $\varphi(1 + \theta)$, if and only if µ_V = µ_U, which is not generally true. In other words, the differential propensity to seek care with vaccination status prevents the direct risk ratio from accurately estimating VE.
 
 ### Derivation of the Odds Ratio
 
 We now see that a simple adjustment for the differential propensity to seek care with vaccination status will guarantee that our posed formula reduces to the correct value of VE:
 
 $$
-VE = 1 - \frac{\frac{C_{\text{FV}}}{\text{vP}}}{\frac{C_{\text{FU}}}{\left( 1 - v \right)P}}\frac{\mu_{U}}{\mu_{V}} = 1 - \frac{\mu_{V}}{\mu_{U}}\frac{\mu_{U}}{\mu_{V}}\left( 1 - \varphi + \varphi\theta \right) = \varphi(1 - \theta)
+VE = 1 - \frac{\frac{C_{FV}}{vP}}{\frac{C_{FU}}{\left( 1 - v \right)P}}\frac{\mu_{U}}{\mu_{V}} = 1 - \frac{\mu_{V}}{\mu_{U}}\frac{\mu_{U}}{\mu_{V}}\left( 1 - \varphi + \varphi\theta \right) = \varphi(1 - \theta)
 $$
 
-But how should $\frac{\mu_{U}}{\mu_{V}}$ be estimated from TND data? If we assume that vaccination status does not affect any aspect of the non-focal pathogens (ε~N~, λ~N~, or π~N~), then the only reasons that the number of people seeking care for ARI due to non-focal pathogens would differ by vaccination status are:
+But how should $\frac{\mu_{U}}{\mu_{V}}$ be estimated from TND data? If we assume that vaccination status does not affect any aspect of the non-focal pathogens (ε_N, λ_N, or π_N), then the only reasons that the number of people seeking care for ARI due to non-focal pathogens would differ by vaccination status are:
 
 - the propensity to seek care differs by vaccination status, and
 
 - different numbers of people are vaccinated vs. unvaccinated.
 
-So we claim $\frac{\mu_{U}}{\mu_{V}}\frac{\left( 1 - v \right)P}{\text{vP}} = \frac{C_{\text{NU}}}{C_{\text{NV}}}$, or equivalently $\frac{\mu_{U}}{\mu_{V}} = \frac{C_{\text{NU}}}{C_{\text{NV}}}\frac{\text{vP}}{\left( 1 - v \right)P}$. Thus, we can say:
+So we claim $\frac{\mu_{U}}{\mu_{V}}\frac{\left( 1 - v \right)P}{vP} = \frac{C_{NU}}{C_{NV}}$, or equivalently $\frac{\mu_{U}}{\mu_{V}} = \frac{C_{NU}}{C_{NV}}\frac{vP}{\left( 1 - v \right)P}$. Thus, we can say:
 
 $$
-VE = 1 - \frac{\frac{C_{\text{FV}}}{\text{vP}}}{\frac{C_{\text{FU}}}{\left( 1 - v \right)P}}\frac{C_{\text{NU}}\text{vP}}{C_{\text{NV}}\left( 1 - v \right)P} = 1 - \frac{C_{\text{FV}}C_{\text{NU}}}{C_{\text{FU}}C_{\text{NV}}}
+VE = 1 - \frac{\frac{C_{FV}}{vP}}{\frac{C_{FU}}{\left( 1 - v \right)P}}\frac{C_{NU}vP}{C_{NV}\left( 1 - v \right)P} = 1 - \frac{C_{FV}C_{NU}}{C_{FU}C_{NV}}
 $$
 
 After some convenient canceling, we have an unbiased estimate of VE that only uses TND quadrants! In particular, an outside source of information giving v is unnecessary. Furthermore, note that:
 
 $$
-VE = 1 - \frac{C_{\text{FV}}C_{\text{NU}}}{C_{\text{FU}}C_{\text{NV}}} = 1 - \frac{P\left( \text{FV} \right)P\left( \text{NU} \right)}{P\left( \text{FU} \right)P\left( \text{NV} \right)} = 1 - \frac{\frac{P\left( \text{FV} \right)}{P\left( \text{FU} \right)}}{\frac{P\left( \text{NV} \right)}{P\left( \text{NU} \right)}} = 1 - \frac{\frac{\frac{P\left( \text{FV} \right)}{P\left( F \right)}}{\frac{P\left( \text{FU} \right)}{P\left( F \right)}}}{\frac{\frac{P\left( \text{NV} \right)}{P\left( N \right)}}{\frac{P\left( \text{NU} \right)}{P\left( N \right)}}} = 1 - \frac{\frac{P(V|F)}{P(U|F)}}{\frac{P(V|N)}{P(U|N)}}
+VE = 1 - \frac{C_{FV}C_{NU}}{C_{FU}C_{NV}} = 1 - \frac{P(FV)P(NU)}{P(FU)P(NV)} = 1 - \frac{\frac{P(FV)}{P(FU)}}{\frac{P(NV)}{P(NU)}} = 1 - \frac{\frac{\frac{P(FV)}{P(F)}}{\frac{P(FU)}{P(F)}}}{\frac{\frac{P(NV)}{P(N)}}{\frac{P(NU)}{P(N)}}} = 1 - \frac{\frac{P(V|F)}{P(U|F)}}{\frac{P(V|N)}{P(U|N)}}
 $$
 
 The final expression for VE is the odds ratio of vaccination given exposure ("OR"). Thus, it can be helpful to think of the odds ratio used in TND this way: the TND expression for VE uses an odds ratio _not_ because protection itself is an odds ratio (it is not), but because correcting the risk ratio of protection for differential care-seeking behavior happens to result in a formula that is equivalent to an odds ratio.
 
 ## When TND Fails
 
-Note how many assumptions were required to make the formula VE = 1 -- OR true. These assumptions about the force of infection and time dynamics are likely false. Relaxing these assumptions will bias the estimator of VE. Now we explore how relaxing specific assumptions causes specific biases in 1 -- OR.
+Note how many assumptions were required to make the formula VE = 1 - OR true. These assumptions about the force of infection and time dynamics are likely false. Relaxing these assumptions will bias the estimator of VE. Now we explore how relaxing specific assumptions causes specific biases in 1 - OR.
 
 ### Force of Exposure Differs by Vaccination Status
 
-We relax the assumption that vaccination does not correlate with force of exposure, so that in general $\varepsilon_{\text{FV}} \neq \varepsilon_{\text{FU}}$ and $\varepsilon_{\text{NV}} \neq \varepsilon_{\text{NU}}$. Many factors can influence this in different directions; for example, perhaps:
+We relax the assumption that vaccination does not correlate with force of exposure, so that in general $\varepsilon_{FV} \neq \varepsilon_{FU}$ and $\varepsilon_{NV} \neq \varepsilon_{NU}$. Many factors can influence this in different directions; for example, perhaps:
 
 - People who choose to get vaccinated also choose to avoid contacts more frequently
 - People who choose to get vaccinated live in more densely populated contact-rich areas
@@ -220,19 +220,19 @@ Note that we continue to assume that any particular force of exposure ε is cons
 
 $$
 \begin{align*}
-VE &= 1 - \frac{C_{\text{FV}}C_{\text{NU}}}{C_{\text{FU}}C_{\text{NV}}} \\
-&= 1 - \frac{\left( \varepsilon_{\text{FV}}\text{tvP}\left\lbrack \left( 1 - \varphi \right)\lambda_{\text{FU}}\pi_{\text{FU}} + \varphi\lambda_{\text{FV}}\pi_{\text{FV}} \right\rbrack\mu_{V} \right)\left( \varepsilon_{\text{NU}}t\left( 1 - v \right)P\lambda_{\text{NU}}\pi_{\text{NU}}\mu_{U} \right)}{\left( \varepsilon_{\text{FU}}t\left( 1 - v \right)P\lambda_{\text{FU}}\pi_{\text{FU}}\mu_{U} \right)\left( \varepsilon_{\text{NV}}\text{tvP}\lambda_{\text{NV}}\pi_{\text{NV}}\mu_{V} \right)} \\
-&= 1 - \frac{\left( \varepsilon_{\text{FV}}\left\lbrack \left( 1 - \varphi \right)\lambda_{\text{FU}}\pi_{\text{FU}} + \varphi\lambda_{\text{FV}}\pi_{\text{FV}} \right\rbrack \right)\left( \varepsilon_{\text{NU}}\lambda_{\text{NU}}\pi_{\text{NU}} \right)}{\left( \varepsilon_{\text{FU}}\lambda_{\text{FU}}\pi_{\text{FU}} \right)\left( \varepsilon_{\text{NV}}\lambda_{\text{NV}}\pi_{\text{NV}} \right)}
+VE &= 1 - \frac{C_{FV}C_{NU}}{C_{FU}C_{NV}} \\
+&= 1 - \frac{\left( \varepsilon_{FV}tvP\left\lbrack \left( 1 - \varphi \right)\lambda_{FU}\pi_{FU} + \varphi\lambda_{FV}\pi_{FV} \right\rbrack\mu_{V} \right)\left( \varepsilon_{NU}t\left( 1 - v \right)P\lambda_{NU}\pi_{NU}\mu_{U} \right)}{\left( \varepsilon_{FU}t\left( 1 - v \right)P\lambda_{FU}\pi_{FU}\mu_{U} \right)\left( \varepsilon_{NV}tvP\lambda_{NV}\pi_{NV}\mu_{V} \right)} \\
+&= 1 - \frac{\left( \varepsilon_{FV}\left\lbrack \left( 1 - \varphi \right)\lambda_{FU}\pi_{FU} + \varphi\lambda_{FV}\pi_{FV} \right\rbrack \right)\left( \varepsilon_{NU}\lambda_{NU}\pi_{NU} \right)}{\left( \varepsilon_{FU}\lambda_{FU}\pi_{FU} \right)\left( \varepsilon_{NV}\lambda_{NV}\pi_{NV} \right)}
 \end{align*}
 $$
 
-By continuing to assume that λ and π are purely immunological, such that λ~N~ and π~N~ are unimpacted by vaccination (i.e., $\lambda_{\text{NV}} = \lambda_{\text{NU}}$ and $\pi_{\text{NV}} = \pi_{\text{NU}}$):
+By continuing to assume that λ and π are purely immunological, such that λ_N and π_N are unimpacted by vaccination (i.e., $\lambda_{NV} = \lambda_{NU}$ and $\pi_{NV} = \pi_{NU}$):
 
-$$= 1 - \frac{\varepsilon_{\text{FV}}\varepsilon_{\text{NU}}}{\varepsilon_{\text{FU}}\varepsilon_{\text{NV}}}\left( 1 - \varphi + \varphi\theta \right)\text{}$$
+$$= 1 - \frac{\varepsilon_{FV}\varepsilon_{NU}}{\varepsilon_{FU}\varepsilon_{NV}}\left( 1 - \varphi + \varphi\theta \right)$$
 
-The term $\frac{\varepsilon_{\text{FV}}\varepsilon_{\text{NU}}}{\varepsilon_{\text{FU}}\varepsilon_{\text{NV}}}$ no longer reduces to 1 by assumption, so the TND VE estimate of 1 -- OR no longer _necessarily_ reduces to the correct value of $\varphi(1 + \theta)$. However, $\frac{\varepsilon_{\text{FV}}\varepsilon_{\text{NU}}}{\varepsilon_{\text{FU}}\varepsilon_{\text{NV}}}$ _can_ still reduce to 1, resulting in an unbiased estimate of VE. All that is required is a weaker assumption that vaccination correlates with force of exposure identically for different pathogens, such that $\varepsilon_{\text{FV}} \neq \varepsilon_{\text{FU}}$ and $\varepsilon_{\text{NV}} \neq \varepsilon_{\text{NU}}$ but $\frac{\varepsilon_{\text{FV}}}{\varepsilon_{\text{FU}}} = \frac{\varepsilon_{\text{NV}}}{\varepsilon_{\text{NU}}}$.
+The term $\frac{\varepsilon_{FV}\varepsilon_{NU}}{\varepsilon_{FU}\varepsilon_{NV}}$ no longer reduces to 1 by assumption, so the TND VE estimate of 1 - OR no longer _necessarily_ reduces to the correct value of $\varphi(1 + \theta)$. However, $\frac{\varepsilon_{FV}\varepsilon_{NU}}{\varepsilon_{FU}\varepsilon_{NV}}$ _can_ still reduce to 1, resulting in an unbiased estimate of VE. All that is required is a weaker assumption that vaccination correlates with force of exposure identically for different pathogens, such that $\varepsilon_{FV} \neq \varepsilon_{FU}$ and $\varepsilon_{NV} \neq \varepsilon_{NU}$ but $\frac{\varepsilon_{FV}}{\varepsilon_{FU}} = \frac{\varepsilon_{NV}}{\varepsilon_{NU}}$.
 
-If this weaker assumption is true, 1 -- OR is still an unbiased estimate of VE; otherwise, 1 -- OR is biased in a way that depends on the values of ε~FV~, ε~FU~, ε~NV~, and ε~NU~.
+If this weaker assumption is true, 1 - OR is still an unbiased estimate of VE; otherwise, 1 - OR is biased in a way that depends on the values of ε_{FV}, ε_{FU}, ε_{NV}, and ε_{NU}.
 
 ### Natural Infection Protects against Re-Infection
 
@@ -240,59 +240,59 @@ We assume that infection with the focal pathogen provides complete protection, r
 
 As a result, the number of people susceptible to non-focal pathogens remains constant at P over time, whereas the number of people susceptible to the focal pathogen decays as $e^{- \varepsilon_{F}\lambda_{F}t}$. Accordingly, the cumulative counts of people observed in the TND with the focal pathogen at time $t$ will be:
 
-$C_{\text{FV}} = vP\lbrack\left( 1 - \varphi \right)(1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FU}}t})\pi_{\text{FU}} + \varphi(1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t})\pi_{\text{FV}}\rbrack\mu_{V}$
+$C_{FV} = vP\lbrack\left( 1 - \varphi \right)(1 - e^{- \varepsilon_{FV}\lambda_{FU}t})\pi_{FU} + \varphi(1 - e^{- \varepsilon_{FV}\lambda_{FV}t})\pi_{FV}\rbrack\mu_{V}$
 
-$$C_{\text{FU}} = \left( 1 - v \right)P(1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t})\pi_{\text{FU}}\mu_{U}$$
+$C_{FU} = \left( 1 - v \right)P(1 - e^{- \varepsilon_{FU}\lambda_{FU}t})\pi_{FU}\mu_{U}$
 
-Now the 1 -- OR estimate of VE becomes:
+Now the 1 - OR estimate of VE becomes:
 
 $$
 \begin{align*}
-VE &= 1 - \frac{C_{\text{FV}}C_{\text{NU}}}{C_{\text{FU}}C_{\text{NV}}} \\
-&= 1 - \frac{vP\lbrack\left( 1 - \varphi \right)(1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FU}}t})\pi_{\text{FU}} + \varphi(1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t})\pi_{\text{FV}}\rbrack\mu_{V})\left( \varepsilon_{\text{NU}}t\left( 1 - v \right)P\lambda_{\text{NU}}\pi_{\text{NU}}\mu_{U} \right)}{\left( \left( 1 - v \right)P(1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t})\pi_{\text{FU}}\mu_{U} \right)\left( \varepsilon_{\text{NV}}\text{tvP}\lambda_{\text{NV}}\pi_{\text{NV}}\mu_{V} \right)} \\
-&= 1 - \frac{\lbrack\left( 1 - \varphi \right)(1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FU}}t})\pi_{\text{FU}} + \varphi(1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t})\pi_{\text{FV}}\rbrack)\left( \varepsilon_{\text{NU}}\lambda_{\text{NU}}\pi_{\text{NU}} \right)}{\left( (1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t})\pi_{\text{FU}} \right)\left( \varepsilon_{\text{NV}}\lambda_{\text{NV}}\pi_{\text{NV}} \right)}
+VE &= 1 - \frac{C_{FV}C_{NU}}{C_{FU}C_{NV}} \\
+&= 1 - \frac{vP\lbrack\left( 1 - \varphi \right)(1 - e^{- \varepsilon_{FV}\lambda_{FU}t})\pi_{FU} + \varphi(1 - e^{- \varepsilon_{FV}\lambda_{FV}t})\pi_{FV}\rbrack\mu_{V})\left( \varepsilon_{NU}t\left( 1 - v \right)P\lambda_{NU}\pi_{NU}\mu_{U} \right)}{\left( \left( 1 - v \right)P(1 - e^{- \varepsilon_{FU}\lambda_{FU}t})\pi_{FU}\mu_{U} \right)\left( \varepsilon_{NV}tvP\lambda_{NV}\pi_{NV}\mu_{V} \right)} \\
+&= 1 - \frac{\lbrack\left( 1 - \varphi \right)(1 - e^{- \varepsilon_{FV}\lambda_{FU}t})\pi_{FU} + \varphi(1 - e^{- \varepsilon_{FV}\lambda_{FV}t})\pi_{FV}\rbrack)\left( \varepsilon_{NU}\lambda_{NU}\pi_{NU} \right)}{\left( (1 - e^{- \varepsilon_{FU}\lambda_{FU}t})\pi_{FU} \right)\left( \varepsilon_{NV}\lambda_{NV}\pi_{NV} \right)}
 \end{align*}
 $$
 
-As above, we will continue to assume that $\lambda_{\text{NV}} = \lambda_{\text{NU}}$ and $\pi_{\text{NV}} = \pi_{\text{NU}}$. And we will reimpose the assumption that $\varepsilon_{\text{FV}} = \varepsilon_{\text{FU}}$ and $\varepsilon_{\text{NV}} = \varepsilon_{\text{NU}}$, to better isolate the consequences of natural protection:
+As above, we will continue to assume that $\lambda_{NV} = \lambda_{NU}$ and $\pi_{NV} = \pi_{NU}$. And we will reimpose the assumption that $\varepsilon_{FV} = \varepsilon_{FU}$ and $\varepsilon_{NV} = \varepsilon_{NU}$, to better isolate the consequences of natural protection:
 
-$$= 1 - \left( 1 - \varphi \right) - \varphi\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}}\frac{\pi_{\text{FV}}}{\pi_{\text{FU}}} = \varphi\left( 1 - \theta_{\pi}\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}} \right)\text{}$$
+$$= 1 - \left( 1 - \varphi \right) - \varphi\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}\frac{\pi_{FV}}{\pi_{FU}} = \varphi\left( 1 - \theta_{\pi}\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} \right)$$
 
-Because the term $\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}}$ is not necessarily equal to θ~λ~, the TND VE estimate of 1 -- OR no longer necessarily reduces to the correct value of $\varphi(1 - \theta)$. In fact, 1 -- OR only reduces to the correct value of $\varphi(1 + \theta)$ under one of the following conditions:
+Because the term $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}$ is not necessarily equal to θ_λ, the TND VE estimate of 1 - OR no longer necessarily reduces to the correct value of $\varphi(1 - \theta)$. In fact, 1 - OR only reduces to the correct value of $\varphi(1 + \theta)$ under one of the following conditions:
 
-- $\lambda_{\text{FV}} = \lambda_{\text{FU}}$, that is, vaccination does not affect the probability of infection given exposure to the focal pathogen. In this case, $VE = \varphi\left( 1 - \theta_{\pi} \right) = \varphi\left( 1 - \theta \right)$ because $\theta = \theta_{\lambda}\theta_{\pi} = 1*\theta_{\pi} = \theta_{\pi}$. Note that vaccination may still affect the probability of ARI given infection, π. Thus, 1 -- OR can be unbiased under "leaky" vaccination, so long as vaccination reduces the probability of ARI, not infection itself.
+- $\lambda_{FV} = \lambda_{FU}$, that is, vaccination does not affect the probability of infection given exposure to the focal pathogen. In this case, $VE = \varphi\left( 1 - \theta_{\pi} \right) = \varphi\left( 1 - \theta \right)$ because $\theta = \theta_{\lambda}\theta_{\pi} = 1*\theta_{\pi} = \theta_{\pi}$. Note that vaccination may still affect the probability of ARI given infection, π. Thus, 1 - OR can be unbiased under "leaky" vaccination, so long as vaccination reduces the probability of ARI, not infection itself.
 
-- $\lambda_{\text{FV}} = 0$, that is, vaccination provides perfect protection against infection given exposure to the focal pathogen. In this case, $VE = \varphi = \varphi\left( 1 - \theta \right)$ because $\theta = \theta_{\lambda}\theta_{\pi} = 0*\theta_{\pi} = 0$. Note that vaccination may still affect the probability of ARI given infection, π, although this is meaningless because successfully vaccinated people never get infected. As such, this condition is equivalent to all-or-nothing vaccination, in which $\varphi$ ≤ 1 and θ = 0.
+- $\lambda_{FV} = 0$, that is, vaccination provides perfect protection against infection given exposure to the focal pathogen. In this case, $VE = \varphi = \varphi\left( 1 - \theta \right)$ because $\theta = \theta_{\lambda}\theta_{\pi} = 0*\theta_{\pi} = 0$. Note that vaccination may still affect the probability of ARI given infection, π, although this is meaningless because successfully vaccinated people never get infected. As such, this condition is equivalent to all-or-nothing vaccination, in which $\varphi$ ≤ 1 and θ = 0.
 
-Outside of these conditions, the value of the term $\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}}$ varies in time, so it cannot equal the constant value θ~λ~. At best, this term can equal θ~λ~ at exactly one time point, meaning 1 -- OR will be unbiased at only one time point. We can show that this time point is $t = 0$ using L'Hôpitál's Rule:
+Outside of these conditions, the value of the term $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}$ varies in time, so it cannot equal the constant value θ_λ. At best, this term can equal θ_λ at exactly one time point, meaning 1 - OR will be unbiased at only one time point. We can show that this time point is $t = 0$ using L'Hôpitál's Rule:
 
-$$\lim_{t \rightarrow 0}\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}} = \lim_{t \rightarrow 0}\frac{\varepsilon_{\text{FV}}\lambda_{\text{FV}}e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{\varepsilon_{\text{FU}}\lambda_{\text{FU}}e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}} = \frac{\varepsilon_{\text{FV}}\lambda_{\text{FV}}}{\varepsilon_{\text{FU}}\lambda_{\text{FU}}} = \frac{\lambda_{\text{FV}}}{\lambda_{\text{FU}}} = \theta_{\lambda}$$
+$$\lim_{t \rightarrow 0}\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} = \lim_{t \rightarrow 0}\frac{\varepsilon_{FV}\lambda_{FV}e^{- \varepsilon_{FV}\lambda_{FV}t}}{\varepsilon_{FU}\lambda_{FU}e^{- \varepsilon_{FU}\lambda_{FU}t}} = \frac{\varepsilon_{FV}\lambda_{FV}}{\varepsilon_{FU}\lambda_{FU}} = \frac{\lambda_{FV}}{\lambda_{FU}} = \theta_{\lambda}$$
 
-Again, note the importance of reinstating the assumption that $\varepsilon_{\text{FV}} = \varepsilon_{\text{FU}}$. Also, note that as $t \rightarrow 0$ from the right, $\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}} \rightarrow \theta_{\lambda}$ from above. Thus, for times beyond $t = 0$, 1 -- OR yields $VE < \varphi\left( 1 - \theta \right)$.
+Again, note the importance of reinstating the assumption that $\varepsilon_{FV} = \varepsilon_{FU}$. Also, note that as $t \rightarrow 0$ from the right, $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} \rightarrow \theta_{\lambda}$ from above. Thus, for times beyond $t = 0$, 1 - OR yields $VE < \varphi\left( 1 - \theta \right)$.
 
-In sum, if vaccination reduces but does not eliminate the probability of infection given exposure to the focal pathogen, then 1 -- OR will underestimate the true value of VE for times beyond the very beginning of the season. In loose terms, protection against the focal pathogen derived from natural infections causes the susceptible population to dwindle. This dwindling through time occurs disproportionately in the unvaccinated, who are more likely to experience natural infections. The same process does not occur for non-focal pathogens, for which natural infections do not provide protection. Thus, the term C~FU~ in $VE = 1 - \frac{C_{\text{FV}}C_{\text{NU}}}{C_{\text{FU}}C_{\text{NV}}}$ shrinks disproportionately as time passes, causing the estimate of VE to also shrink.
+In sum, if vaccination reduces but does not eliminate the probability of infection given exposure to the focal pathogen, then 1 - OR will underestimate the true value of VE for times beyond the very beginning of the season. In loose terms, protection against the focal pathogen derived from natural infections causes the susceptible population to dwindle. This dwindling through time occurs disproportionately in the unvaccinated, who are more likely to experience natural infections. The same process does not occur for non-focal pathogens, for which natural infections do not provide protection. Thus, the term C_{FU} in $VE = 1 - \frac{C_{FV}C_{NU}}{C_{FU}C_{NV}}$ shrinks disproportionately as time passes, causing the estimate of VE to also shrink.
 
 ### Different Force of Exposure and Natural Protection
 
-If both assumptions discussed above are broken at once, such that the force of exposure differs by vaccination status and the focal pathogen provides natural protection, then 1 -- OR gives:
+If both assumptions discussed above are broken at once, such that the force of exposure differs by vaccination status and the focal pathogen provides natural protection, then 1 - OR gives:
 
-$$VE = 1 - \frac{C_{\text{FV}}C_{\text{NU}}}{C_{\text{FU}}C_{\text{NV}}} = 1 - \frac{\varepsilon_{\text{NU}}}{\varepsilon_{\text{NV}}}\left\lbrack \left( 1 - \varphi \right)\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FU}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}} + \varphi\theta_{\pi}\frac{1 - e^{- \varepsilon_{\text{FV}}\lambda_{\text{FV}}t}}{1 - e^{- \varepsilon_{\text{FU}}\lambda_{\text{FU}}t}} \right\rbrack \neq \varphi\left( 1 - \theta \right)$$
+$$VE = 1 - \frac{C_{FV}C_{NU}}{C_{FU}C_{NV}} = 1 - \frac{\varepsilon_{NU}}{\varepsilon_{NV}}\left\lbrack \left( 1 - \varphi \right)\frac{1 - e^{- \varepsilon_{FV}\lambda_{FU}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} + \varphi\theta_{\pi}\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} \right\rbrack \neq \varphi\left( 1 - \theta \right)$$
 
-In this case, the bias in the TND estimate of VE depends on the relative force of exposure between vaccinated and unvaccinated people, for all pathogens. Unlike in Section 6.1, assuming that vaccination correlates with force of exposure identically for different pathogens ($\frac{\varepsilon_{\text{FV}}}{\varepsilon_{\text{FU}}} = \frac{\varepsilon_{\text{NV}}}{\varepsilon_{\text{NU}}}$) no longer corrects this.
+In this case, the bias in the TND estimate of VE depends on the relative force of exposure between vaccinated and unvaccinated people, for all pathogens. Unlike in Section 6.1, assuming that vaccination correlates with force of exposure identically for different pathogens ($\frac{\varepsilon_{FV}}{\varepsilon_{FU}} = \frac{\varepsilon_{NV}}{\varepsilon_{NU}}$) no longer corrects this.
 
 Two further observations about these assumptions are also warranted:
 
-- The disparity in force of exposure by vaccination status is what biases 1 -- OR. Different forces of exposure between the focal and non-focal pathogens (i.e. $\varepsilon_{F} \neq \varepsilon_{N}$), even if these forces are dynamic in time (i.e. $\varepsilon_{F}\left( t \right) \neq \varepsilon_{N}(t)$), do not contribute to the bias.
+- The disparity in force of exposure by vaccination status is what biases 1 - OR. Different forces of exposure between the focal and non-focal pathogens (i.e. $\varepsilon_{F} \neq \varepsilon_{N}$), even if these forces are dynamic in time (i.e. $\varepsilon_{F}\left( t \right) \neq \varepsilon_{N}(t)$ ), do not contribute to the bias.
 
-- The disparity in natural protection between the focal and non-focal pathogens need not be so exaggerated (i.e. complete vs. non-existent, respectively). Any disparity in natural protection will bias 1 -- OR for the same reasons described in Section 6.2, albeit perhaps to a lesser extent.
+- The disparity in natural protection between the focal and non-focal pathogens need not be so exaggerated (i.e. complete vs. non-existent, respectively). Any disparity in natural protection will bias 1 - OR for the same reasons described in Section 6.2, albeit perhaps to a lesser extent.
 
 ### Behavioral Correlations between Vaccination and Susceptibility/Severity
 
-Even when $1 - OR = \varphi\left( 1 - \theta \right) = \varphi\left( 1 - \frac{\lambda_{\text{FV}}}{\lambda_{\text{FU}}}\frac{\pi_{\text{FV}}}{\pi_{\text{FU}}} \right)$, bias may be lurking in the interpretation. VE is typically interpreted as purely a result of vaccine-stimulated immune defense. But perhaps $\lambda_{\text{FV}} \neq \lambda_{\text{FU}}$ and/or $\pi_{\text{FV}} \neq \pi_{\text{FU}}$ for reasons unrelated to immunological action. For example:
+Even when $1 - OR = \varphi\left( 1 - \theta \right) = \varphi\left( 1 - \frac{\lambda_{FV}}{\lambda_{FU}}\frac{\pi_{FV}}{\pi_{FU}} \right)$, bias may be lurking in the interpretation. VE is typically interpreted as purely a result of vaccine-stimulated immune defense. But perhaps $\lambda_{FV} \neq \lambda_{FU}$ and/or $\pi_{FV} \neq \pi_{FU}$ for reasons unrelated to immunological action. For example:
 
-- Individuals at high risk of infection given exposure (e.g. elderly, some immunocompromised) may be more likely to get vaccinated than the general public. In this case, the realized value of $\theta_{\lambda} = \frac{\lambda_{\text{FV}}}{\lambda_{\text{FU}}}$ is closer to 1 than it would be if it only captured immunological phenomena.
+- Individuals at high risk of infection given exposure (e.g. elderly, some immunocompromised) may be more likely to get vaccinated than the general public. In this case, the realized value of $\theta_{\lambda} = \frac{\lambda_{FV}}{\lambda_{FU}}$ is closer to 1 than it would be if it only captured immunological phenomena.
 
-- Individuals who get vaccinated may be more likely to use at-home treatments for mild illness which help prevent progression to ARI. In this case, the realized value of $\theta_{\pi} = \frac{\pi_{\text{FV}}}{\pi_{\text{FU}}}$ is closer to 0 than it would be if it only captured immunological phenomena.
+- Individuals who get vaccinated may be more likely to use at-home treatments for mild illness which help prevent progression to ARI. In this case, the realized value of $\theta_{\pi} = \frac{\pi_{FV}}{\pi_{FU}}$ is closer to 0 than it would be if it only captured immunological phenomena.
 
 These examples show that a purely immunological interpretation of VE could under- or overestimate the impact of vaccination, depending on which conditions and behaviors correlate with vaccination.
 
@@ -302,16 +302,16 @@ To this point, we have tacitly assumed that everyone with ARI who seeks care is 
 
 $$
 \begin{align*}
-VE &= 1 - \frac{\left( \varepsilon_{\text{FV}}\text{tvP}\left\lbrack \left( 1 - \varphi \right)\lambda_{\text{FU}}\pi_{\text{FU}} + \varphi\lambda_{\text{FV}}\pi_{\text{FV}} \right\rbrack\mu_{V}\zeta_{\text{FV}} \right)\left( \varepsilon_{\text{NU}}t\left( 1 - v \right)P\lambda_{\text{NU}}\pi_{\text{NU}}\mu_{U}\zeta_{\text{NU}} \right)}{\left( \varepsilon_{\text{FU}}t\left( 1 - v \right)P\lambda_{\text{FU}}\pi_{\text{FU}}\mu_{U}\zeta_{\text{FU}} \right)\left( \varepsilon_{\text{NV}}\text{tvP}\lambda_{\text{NV}}\pi_{\text{NV}}\mu_{V}\zeta_{\text{NV}} \right)} \\
-&= 1 - \frac{\zeta_{\text{FV}}\zeta_{\text{NU}}}{\zeta_{\text{FU}}\zeta_{\text{NV}}}\left( 1 - \varphi + \varphi\theta \right)
+VE &= 1 - \frac{\left( \varepsilon_{FV}tvP\left\lbrack \left( 1 - \varphi \right)\lambda_{FU}\pi_{FU} + \varphi\lambda_{FV}\pi_{FV} \right\rbrack\mu_{V}\zeta_{FV} \right)\left( \varepsilon_{NU}t\left( 1 - v \right)P\lambda_{NU}\pi_{NU}\mu_{U}\zeta_{NU} \right)}{\left( \varepsilon_{FU}t\left( 1 - v \right)P\lambda_{FU}\pi_{FU}\mu_{U}\zeta_{FU} \right)\left( \varepsilon_{NV}tvP\lambda_{NV}\pi_{NV}\mu_{V}\zeta_{NV} \right)} \\
+&= 1 - \frac{\zeta_{FV}\zeta_{NU}}{\zeta_{FU}\zeta_{NV}}\left( 1 - \varphi + \varphi\theta \right)
 \end{align*}
 $$
 
-Thus, unless the effect of vaccination on the probability of being tested is identical for both the focal and non-focal pathogens, $\frac{\zeta_{\text{FV}}}{\zeta_{\text{FU}}} = \frac{\zeta_{\text{NV}}}{\zeta_{\text{NU}}}$, then testing probability also contributes to bias in 1 -- OR.
+Thus, unless the effect of vaccination on the probability of being tested is identical for both the focal and non-focal pathogens, $\frac{\zeta_{FV}}{\zeta_{FU}} = \frac{\zeta_{NV}}{\zeta_{NU}}$, then testing probability also contributes to bias in 1 - OR.
 
 ## Conclusions
 
-1 -- OR from a TND study is an unbiased estimator of VE only under a restrictive and unrealistic set of assumptions. Violating these assumptions introduces biases which can be understood in isolation, but which may interact with one another in complicated ways. Nonetheless, some themes emerge:
+1 - OR from a TND study is an unbiased estimator of VE only under a restrictive and unrealistic set of assumptions. Violating these assumptions introduces biases which can be understood in isolation, but which may interact with one another in complicated ways. Nonetheless, some themes emerge:
 
 - The transmission and/or disease caused by the focal vs. non-focal pathogens need not be identical, but they must respond to vaccination identically (except for λ and π), to avoid bias.
 
