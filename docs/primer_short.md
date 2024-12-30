@@ -110,15 +110,28 @@ The expected value of this estimator is:
 \end{align*}
 ```
 
-If we assume:
+Assuming perfect test sensitivity and specificity:
 
-- Equal exposure probabilities: $\varepsilon_V = \varepsilon_U$
-- Perfect sensitivity and specificity
+```math
+\mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{OR}\right] = 1 -
+  \frac{
+    \varepsilon_V \lambda_V (1 - \varepsilon_U \lambda_U) \mu_{VI} \mu_{UX}
+    }{
+      \varepsilon_U \lambda_U (1 - \varepsilon_V \lambda_V) \mu_{VX} \mu_{UI}
+    }
+```
 
-Then this reduces to:
+Furthermore assume equivalent post-infection behavior among the vaccinated and unvaccinated. Specificially, the infected are equally likely to progress to symptoms and seek care, regardless of vaccination status, such that $\mu_{VI} = \mu_{UI}$, and similarly for the uninfected, such that $\mu_{VX} = \mu_{UX}$. Then:
+
+```math
+\mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{OR}\right] = 1 -
+  \frac{\varepsilon_V \lambda_V (1 - \varepsilon_U \lambda_U)}{\varepsilon_U \lambda_U (1 - \varepsilon_V \lambda_V)}
+```
+
+If everyone is exposed $\varepsilon_V = \varepsilon_U = 1$, then:
 
 $$
-1 - \frac{\lambda_V (1 - \lambda_U)}{\lambda_U (1 - \lambda_V)}
+\mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{OR}\right] = 1 - \frac{\lambda_V (1 - \lambda_U)}{\lambda_U (1 - \lambda_V)}
 $$
 
-In other words, at the cost of estimating VE in terms of an odds ratio rather than a risk ratio, we remove the need to make assumptions about probabilities $\mu$. This removes assumptions about (1) the vaccine preventing progression from infection to symptoms that would drive healthcare seeking and (2) healthcare seeking given the development of symptoms.
+which is an unbiased estimate of the odds ratio of protection.
