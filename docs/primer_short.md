@@ -36,15 +36,14 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 - Individuals are vaccinated ($V$) with probability $v$, or unvaccinated $U$
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
-- Individuals are exposed ($E$) with probability $P[E|V]$ or $P[E|U]$
-  - There is only one opportunity for exposure per individuals; individuals are either exposed or not
-- Exposed individuals are infected ($I$) with probability $P[I|E,V]$ or $P[I|E,U]$
-- Infected individuals seek and receive a test ($S$) with probability $P[S|I,V]$ or $P[S|I,U]$
-  - Note that this probability represents a combination of developing symptoms, seeking healthcare, and actually receiving a test
-- Uninfected individuals ($X$) also seek and receive tests, with unconditional probability $P[S|X,V]$ or $P[S|X,U]$
+- Each individual has the possibility of becoming exposed $E$, infected $I$, and then seek and receive a test $S$, with conditional probabilities depending on vaccination status:
+  - E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[I|E,V] \times P[S|I,V]$
+  - There is only one opportunity for exposure per individual
+  - Note that the $I \to S$ transition represents a combination of developing symptoms, seeking healthcare, and actually receiving a test
+- Every individual also has the opportunity to seek and receive a test for reasons unrelated to infection, while in uninfected status $X$
+  - E.g., the probability that a vaccinated person will seek a test like this is $P[S|X,V]$
 - People who receive tests are either positive ($P$) or negative ($N$)
-- The test has sensitivity $p_\mathrm{sens}$ and specificity $p_\mathrm{spec}$
-  - E.g., $P[P|S,V] = p_\mathrm{sens}$
+  - The test has sensitivity $p_\mathrm{sens}$ and specificity $p_\mathrm{spec}$, such that, e.g., $P[P|S,V] = p_\mathrm{sens}$
 
 #### Quantity of interest
 
@@ -83,13 +82,13 @@ The actual values from the TND trial are affected by test performance:
 An estimator of the desired quantity is:
 
 ```math
-\hat{\mathrm{VE}}_\mathrm{OR} = 1 - \frac{C_{VP} C_{UN}}{C_{UP} C_{VN}}
+\hat{\mathrm{VE}} = 1 - \frac{C_{VP} C_{UN}}{C_{UP} C_{VN}}
 ```
 
 When there is perfect test performance, the TND counts reduce to the actual disease status counts, e.g., $C_{VP} = C_{VI}$. In this case, the expected value of the estimator is:
 
 ```math
-\mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{OR}\right] = 1 - \frac{P[E|V] \times P[I|E,V] \times P[S|I,V] \times P[S|X,U]}{P[E|U] \times P[I|E,U] \times P[S|I,U] \times P[S|X,V]}
+\mathbb{E}\left[\hat{\mathrm{VE}}\right] = 1 - \frac{P[E|V] \times P[I|E,V] \times P[S|I,V] \times P[S|X,U]}{P[E|U] \times P[I|E,U] \times P[S|I,U] \times P[S|X,V]}
 ```
 
 If we further assume that:
@@ -100,7 +99,7 @@ If we further assume that:
 then:
 
 ```math
-\mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{OR}\right]
+\mathbb{E}\left[\hat{\mathrm{VE}}\right]
   = 1 - \frac{P[S|E,V]}{P[S|E,U]}
 ```
 
