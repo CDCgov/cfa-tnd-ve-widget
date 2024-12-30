@@ -1,18 +1,18 @@
 import numpy as np
 
 
-def ev_rr_estimator(
-    eps_v: np.ndarray,
-    eps_u: np.ndarray,
-    lam_v: np.ndarray,
-    lam_u: np.ndarray,
-    mu_vi: np.ndarray,
-    mu_ui: np.ndarray,
-    mu_vx: np.ndarray,
-    mu_ux: np.ndarray,
-    sens: np.ndarray,
-    spec: np.ndarray,
-) -> np.ndarray:
+def ev_estimator(
+    eps_v: float | np.ndarray,
+    eps_u: float | np.ndarray,
+    lam_v: float | np.ndarray,
+    lam_u: float | np.ndarray,
+    mu_vi: float | np.ndarray,
+    mu_ui: float | np.ndarray,
+    mu_vx: float | np.ndarray,
+    mu_ux: float | np.ndarray,
+    sens: float | np.ndarray,
+    spec: float | np.ndarray,
+) -> float | np.ndarray:
     """Expected value of risk ratio estimator
 
     Args:
@@ -30,6 +30,23 @@ def ev_rr_estimator(
     Returns:
         np.ndarray: expected value
     """
-    return 1.0 - (
-        eps_v * lam_v * mu_vi * sens + (1.0 - eps_v * lam_v) * mu_vx * (1.0 - spec)
-    ) / (eps_u * lam_u * mu_ui * sens + (1.0 - eps_u * lam_u) * mu_ux * (1.0 - spec))
+    # expected proportions of true infection status (i=infected or x=not)
+    # by vaccination status (v=vaccinated, u=not)
+    vi = eps_v * lam_v
+    vx = 1.0 - vi
+    ui = eps_u * lam_u
+    ux = 1.0 - ui
+
+    # proportions of those individuals who are tested (t)
+    tvi = vi * mu_vi
+    tvx = vx * mu_vx
+    tui = ui * mu_ui
+    tux = ux * mu_ux
+
+    # expected proportions of test outcomes (p=positive, n=negative)
+    pv = tvi * sens + tvx * (1.0 - spec)
+    nv = tvi * (1.0 - sens) + tvx * spec
+    pu = tui * sens + tux * (1.0 - spec)
+    nu = tui * (1.0 - sens) + tux * spec
+
+    return 1.0 - (pv * nu) / (pu * nv)
