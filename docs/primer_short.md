@@ -52,15 +52,14 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 ### Single-exposure model
 
-- There is only one opportunity for exposure per individuals; individuals are either exposed or not
 - Individuals are vaccinated with probability $v$
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
 - Individuals are exposed with probability $\varepsilon_V$ or $\varepsilon_U$
+  - There is only one opportunity for exposure per individuals; individuals are either exposed or not
 - Exposed individuals are infected ($I$) with probability $\lambda_V$ or $\lambda_U$
 - Infected individuals seek and receive a test with probability $\mu_{VI}$ or $\mu_{UI}$
   - Note that this probability represents a combination of developing symptoms, seeking healthcare, and receiving a test given that healthcare was sought
-  - $1-\mu_V/\mu_U$ is an example of VE against progression conditional on an earlier outcome, written $\mathrm{VE}_P$ in HLS
-- Uninfected individuals ($X$) also seek and receive tests with probability $\mu_{VX}$ or $\mu_{UX}$
+- Uninfected individuals ($X$) also seek and receive tests with unconditional probability $\mu_{VX}$ or $\mu_{UX}$
 - People who receive tests are either positive ($P$) or negative ($N$)
 - The test has imperfect sensitivity $p_\mathrm{sens}$ and specificity $p_\mathrm{spec}$
 
@@ -72,16 +71,27 @@ $$
 1 - \frac{\lambda_V}{\lambda_U}
 $$
 
-In a population of size $n$, the TND supplies counts whose expected values are:
+The expected values of the numbers of infected and uninfected, stratified by vaccination status, are:
 
-$$
+```math
 \begin{align*}
-\mathbb{E}[C_{PV}] &= n v \left[\varepsilon_V \lambda_V \mu_{VI} p_\mathrm{sens} + (1 - \varepsilon_V \lambda_V) \mu_{VX} (1 - p_\mathrm{spec}) \right] \\
-\mathbb{E}[C_{NV}] &= n v \left[\varepsilon_V \lambda_V \mu_{VI} (1 - p_\mathrm{sens}) + (1 - \varepsilon_V \lambda_V) \mu_{VX} p_\mathrm{spec} \right] \\
-\mathbb{E}[C_{PU}] &= n (1-v) \left[\varepsilon_U \lambda_U \mu_{UI} p_\mathrm{sens} + (1 - \varepsilon_U \lambda_U) \mu_{UX} (1 - p_\mathrm{spec}) \right] \\
-\mathbb{E}[C_{NU}] &= n (1-v) \left[\varepsilon_U \lambda_U \mu_{UI} (1 - p_\mathrm{sens}) + (1 - \varepsilon_U \lambda_U) \mu_{UX} p_\mathrm{spec} \right] \\
+\mathbb{E}[C_{VI}] &= n v \times P[E|V] \times P[I|E,V] \times P[S|I,V] \\
+\mathbb{E}[C_{VX}] &= n v \times P[S|X,V] \\
+\mathbb{E}[C_{UI}] &= n (1-v) \times P[E|U] \times P[I|E,U] \times P[S|I,U] \\
+\mathbb{E}[C_{UX}] &= n (1-v) \times P[S|X,U] \\
 \end{align*}
-$$
+```
+
+The actual values from the TND trial are affected by test performance:
+
+```math
+\begin{align*}
+\mathbb{E}[C_{VP}] &= p_\mathrm{sens} \mathbb{E}[C_{VI}] + (1 - p_\mathrm{spec}) \mathbb{E}[C_{VX}] \\
+\mathbb{E}[C_{VN}] &= (1 - p_\mathrm{sens}) \mathbb{E}[C_{VI}] + p_\mathrm{spec} \mathbb{E}[C_{VX}] \\
+\mathbb{E}[C_{UP}] &= p_\mathrm{sens} \mathbb{E}[C_{UI}] + (1 - p_\mathrm{spec}) \mathbb{E}[C_{UX}] \\
+\mathbb{E}[C_{UN}] &= (1 - p_\mathrm{sens}) \mathbb{E}[C_{UI}] + p_\mathrm{spec} \mathbb{E}[C_{UX}] \\
+\end{align*}
+```
 
 #### Odds ratio estimator
 
