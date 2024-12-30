@@ -309,7 +309,7 @@ Thus, unless the effect of vaccination on the probability of being tested is ide
 $1 - \mathrm{OR}$ from a TND study is an unbiased estimator of VE only under a restrictive and unrealistic set of assumptions. Violating these assumptions introduces biases which can be understood in isolation, but which may interact with one another in complicated ways. Nonetheless, some themes emerge:
 
 - The transmission and/or disease caused by the focal vs. non-focal pathogens need not be identical, but they must respond to vaccination identically (except for $\lambda$ and $\pi$), to avoid bias.
-- Dynamics cause bias not because the rates of observing TND quadrants changes through time, but because the _relative_ rates of observing vaccinated vs. unvaccinated TND quadrants change through time.
+- Dynamics cause bias not because the rates of observing TND quadrants change through time, but because the _relative_ rates of observing vaccinated vs. unvaccinated TND quadrants change through time.
 
 Using these conclusions and the mathematical language developed above, the biasing effect of other factors not discussed here (e.g. vaccine waning through time) on VE should be more easily investigated.
 
