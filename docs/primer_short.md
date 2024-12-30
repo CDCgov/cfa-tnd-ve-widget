@@ -34,9 +34,9 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 ### Single-exposure model
 
-- Individuals are vaccinated $V$ with probability $v$, or unvaccinated $U$
+- Individuals are vaccinated ($V$) with probability $v$, or unvaccinated $U$
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
-- Individuals are exposed with probability $P[E|V]$ and $P[E|U]$
+- Individuals are exposed ($E$) with probability $P[E|V]$ or $P[E|U]$
   - There is only one opportunity for exposure per individuals; individuals are either exposed or not
 - Exposed individuals are infected ($I$) with probability $P[I|E,V]$ or $P[I|E,U]$
 - Infected individuals seek and receive a test ($S$) with probability $P[S|I,V]$ or $P[S|I,U]$
