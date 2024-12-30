@@ -86,18 +86,18 @@ $$
 
 One estimator is:
 
-$$
+```math
 \hat{\mathrm{VE}}_\mathrm{RR} \equiv 1 - \frac{C_{PV} / (C_{PV} + C_{NV})}{C_{PU} / (C_{PU} + C_{NU})}
-$$
+```
 
 The expected value of this estimator is:
 
-$$
+```math
 \begin{align*}
 \mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{RR}\right] &= 1 - \frac{nv \left[\varepsilon_V \lambda_V \mu_{V|I} p_\mathrm{sens} + (1 - \varepsilon_V \lambda_V) \mu_{V|X} (1 - p_\mathrm{spec}) \right]}{n (1-v) \left[\varepsilon_U \lambda_U \mu_{U|I} p_\mathrm{sens} + (1 - \varepsilon_U \lambda_U) \mu_{U|X} (1 - p_\mathrm{spec}) \right]} \frac{n(1-v)}{nv} \\
 &= 1 - \frac{\left[\varepsilon_V \lambda_V \mu_{V|I} p_\mathrm{sens} + (1 - \varepsilon_V \lambda_V) \mu_{V|X} (1 - p_\mathrm{spec}) \right]}{\left[\varepsilon_U \lambda_U \mu_{U|I} p_\mathrm{sens} + (1 - \varepsilon_U \lambda_U) \mu_{U|X} (1 - p_\mathrm{spec}) \right]}
 \end{align*}
-$$
+```
 
 This estimator is unbiased if:
 
@@ -109,13 +109,13 @@ This estimator is unbiased if:
 
 Another estimator is:
 
-$$
+```math
 \hat{\mathrm{VE}}_\mathrm{OR} = 1 - \frac{C_{PV} C_{NU}}{C_{PU} C_{NV}}
-$$
+```
 
 The expected value of this estimator is:
 
-$$
+```math
 \begin{align*}
 \mathbb{E}\left[\hat{\mathrm{VE}}_\mathrm{OR}\right]
   &= 1 -
@@ -130,7 +130,7 @@ $$
         \left[\varepsilon_V \lambda_V \mu_{V|I} (1 - p_\mathrm{sens}) + (1 - \varepsilon_V \lambda_V) \mu_{V|X} p_\mathrm{spec} \right]
       }
 \end{align*}
-$$
+```
 
 If we assume:
 
