@@ -30,71 +30,83 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 - Individuals are vaccinated ($V$) with probability $v$, or unvaccinated ($U$)
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
-- Each individual has the possibility of becoming exposed $E$, infected $I$, and then seek and receive a test $T$, with conditional probabilities depending on vaccination status:
-  - E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[I|E,V] \times P[T|I,V]$
-  - There is only one opportunity for exposure per individual
-  - Note that the $I \to T$ transition represents a combination of developing symptoms, seeking healthcare, and actually receiving a test
-- Every individual also has the opportunity to seek and receive a test for reasons unrelated to infection, while in uninfected status $X$
-  - E.g., the probability that a vaccinated person will seek a test like this is $P[T|X,V]$
-- People who receive tests are either positive ($P$) or negative ($N$)
-  - The test has sensitivity $p_\mathrm{sens}$ and specificity $p_\mathrm{spec}$, such that, e.g., $P[P|T,V] = p_\mathrm{sens}$
+- Each individual has the possibility of becoming exposed $E$, and then has further conditional probabilities of becoming infected $I$, symptomatic $S_I$, and then tested $T_I$
+  - Conditional probabilities depend on vaccination status. E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[I|E,V] \times P[S_I|I,V] \times P[T_I|S_I,V]$.
+  - There is only one opportunity for exposure per individual.
+  - The $S \to T$ transition represents a combination of seeking healthcare and then qualifying to receive a test.
+- Every individual also has an independent probability to develop symptoms $S_X$ for reasons unrelated to infection with the pathogen of interest, and then a conditional probability to become tested $T_X$.
+  - E.g., the probability that a vaccinated person will seek a test for reasons unrelated to infection is $P[T_X|S_X,V] \times P[S_X|V]$.
+- Testing
+  - People who receive tests are either positive ($P$) or negative ($N$).
+  - The test has sensitivity $p_\mathrm{sens}$ and specificity $p_\mathrm{spec}$, such that, e.g.:
+    - $P[P|T_I,V] = p_\mathrm{sens}$
+    - $P[N|T_I,V] = 1 - p_\mathrm{sens}$
+    - $P[N|T_X,V] = p_\mathrm{spec}$
+  - We _a priori_ assume that test performance is unrelated to vaccination status, e.g., $P[P|T_I,V]=P[P|T_I,U]$.
 
 #### Quantity of interest
 
 We are interested in protection against symptomatic disease, conditioned on exposure:
 
 ```math
-\mathrm{VE}_{SP} = 1 - \frac{P[T | V, E]}{P[T | U, E]}
+\mathrm{VE}_{SP} = 1 - \frac{P[S_I | V, E]}{P[S_I | U, E]}
 ```
 
 #### Measured quantities
 
-The expected values of the numbers of infected and uninfected, stratified by vaccination status, are:
+The expected values of the numbers of tested individuals, stratified by caused of symptoms (infected $I$ or not $X$) and vaccination status, are:
 
 ```math
 \begin{align*}
-\mathbb{E}[C_{VI}] &= n v \times P[E|V] \times P[I|E,V] \times P[T|I,V] \\
-\mathbb{E}[C_{VX}] &= n v \times P[T|X,V] \\
-\mathbb{E}[C_{UI}] &= n (1-v) \times P[E|U] \times P[I|E,U] \times P[T|I,U] \\
-\mathbb{E}[C_{UX}] &= n (1-v) \times P[T|X,U] \\
+\mathbb{E}[C_{VI}] &= n v \times P[T_I | S_I,V] \times P[S_I|I,V] \times P[I|E,V] \times P[E|V] \\
+\mathbb{E}[C_{VX}] &= n v \times P[T_X|S_X,V] \times P[S_X|V] \\
 \end{align*}
 ```
 
-The actual values from the TND trial are affected by test performance:
+and similarly for $U$.
+
+The actual values from the TND trial (i.e., counts of positive $P$ and negative $N$ tests) are affected by test performance:
 
 ```math
 \begin{align*}
 \mathbb{E}[C_{VP}] &= p_\mathrm{sens} \mathbb{E}[C_{VI}] + (1 - p_\mathrm{spec}) \mathbb{E}[C_{VX}] \\
 \mathbb{E}[C_{VN}] &= (1 - p_\mathrm{sens}) \mathbb{E}[C_{VI}] + p_\mathrm{spec} \mathbb{E}[C_{VX}] \\
-\mathbb{E}[C_{UP}] &= p_\mathrm{sens} \mathbb{E}[C_{UI}] + (1 - p_\mathrm{spec}) \mathbb{E}[C_{UX}] \\
-\mathbb{E}[C_{UN}] &= (1 - p_\mathrm{sens}) \mathbb{E}[C_{UI}] + p_\mathrm{spec} \mathbb{E}[C_{UX}] \\
 \end{align*}
 ```
 
-#### Odds ratio estimator
+and similarly for $U$.
 
-An estimator of the desired quantity is:
+#### Estimator
+
+An estimator of the quantity of interest is:
 
 ```math
 \hat{\mathrm{VE}} = 1 - \frac{C_{VP} C_{UN}}{C_{UP} C_{VN}}
 ```
 
-When there is perfect test performance, the TND counts reduce to the actual disease status counts, e.g., $C_{VP} = C_{VI}$. In this case, the expected value of the estimator is:
+_Proposition_. This estimator is unbiased if:
+
+1. the test has perfect sensitivity and specificity, such that, e.g., $C_{VP} = C_{VI}$,
+2. the probability of exposure is identical among the vaccinated and unvaccinated, i.e., $P[E|V] = P[E|U]$,
+3. non-infection symptoms arise with equal probability regardless of vaccination status, i.e., $P[S_X|V] = P[S_X|U]$, and
+4. people seek testing for symptoms with a single probability, regardless of the cause of the symptoms and vaccination status, i.e., $P[T_I|S_I,V] = P[T_X|S_X,V] = P[T_I|S_I,U] = P[T_X|S_X,U]$.
+
+_Proof_. Under the assumption of perfect performance, the expected value of the estimator is:
 
 ```math
-\mathbb{E}\left[\hat{\mathrm{VE}}\right] = 1 - \frac{P[E|V] \times P[I|E,V] \times P[T|I,V] \times P[T|X,U]}{P[E|U] \times P[I|E,U] \times P[T|I,U] \times P[T|X,V]}
+\mathbb{E}\left[\hat{\mathrm{VE}}\right] = 1 - \frac{
+    P[T_I|S_I,V] \times P[S_I|I,V] \times P[I|E,V] \times P[E|V]
+  }{
+    P[T_I|S_I,U] \times P[S_I|I,U] \times P[I|E,U] \times P[E|U]
+  } \times
+  \frac{P[T_X|S_X,U] \times P[S_X|U]}{P[T_X|S_X,V] \times P[S_X|V]}
 ```
 
-If we further assume that:
+Under the assumption of equal exposure rates, the fourth terms in the numerator in denominator cancel. Under the assumption of equal non-infection symptom probability, sixth terms cancel. Under the assumption of identical testing behavior, the first and fifth terms cancel.
 
-1. the probability of exposure is identical among the vaccinated and unvaccinated, i.e., $P[E|V] = P[E|U]$, and
-2. vaccination does not affect progression to testing among the uninfected, i.e., $P[T|X,U]=P[T|X,V]$
-
-then:
+The remaining (second and third) terms collapse to:
 
 ```math
 \mathbb{E}\left[\hat{\mathrm{VE}}\right]
-  = 1 - \frac{P[T|E,V]}{P[T|E,U]}
+  = 1 - \frac{P[S_I|E,V]}{P[S_I|E,U]}
 ```
-
-which is an unbiased estimator of $\mathrm{VE}_{SP}$.
