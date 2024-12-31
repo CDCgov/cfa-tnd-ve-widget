@@ -5,7 +5,7 @@
 VE is the fractional reduction in the probability of an adverse outcome due to vaccination. For purposes of a test-negative design (TND) study, we further define VE to be:
 
 - a direct effect, that is, the counterfactual reduction in risk that would occur if a single individual were vaccinated or not, and not the population-level effect of reducing transmission via a vaccination program,
-- Protection against symptomatic disease that would lead to a diagnostic test, written $\mathrm{VE}_{SP}$ in [Halloran, Longini, and Struchiner](https://doi.org/10.1007/978-0-387-68636-3),
+- protection against symptomatic disease that would lead to a diagnostic test, written $\mathrm{VE}_{SP}$ in [Halloran, Longini, and Struchiner](https://doi.org/10.1007/978-0-387-68636-3),
 - conditioned on some probability or amount of exposure to disease, and
 - binary, that is, individuals are considered vaccinated or not (e.g., people who were vaccinated shortly before the outcome of interest may be classified as "unvaccinated" in the study, because they are presumed to have not yet been protected).
 
@@ -32,8 +32,8 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
 - Each individual has the possibility of becoming exposed $E$, and then has further conditional probabilities of becoming symptomatically infected $S_I$, and then tested $T_I$
   - Conditional probabilities depend on vaccination status. E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[S_I|E,V] \times P[T_I|S_I,V]$.
-  - There is only one opportunity for exposure per individual.
-  - The $S_I \to T$ transition represents a combination of seeking healthcare and then qualifying to receive a test.
+  - There is only one opportunity for exposure per individual. Thus, this form of the model does not distinguish between all-or-nothing or leaky vaccine efficacy.
+  - The $S \to T$ transitions represent a combination of seeking healthcare and then qualifying to receive a test.
 - Every individual also has an independent probability to develop symptoms $S_X$ for reasons unrelated to infection with the pathogen of interest, and then a conditional probability to become tested $T_X$.
   - E.g., the probability that a vaccinated person will seek a test for reasons unrelated to infection is $P[T_X|S_X,V] \times P[S_X|V]$.
 - Testing
