@@ -1,4 +1,21 @@
+import pytest
+import streamlit.testing.v1
+
 import tnd
+
+
+@pytest.mark.filterwarnings(
+    r"ignore:\s+Deprecated since `altair=5.5.0`. Use altair.theme instead."
+)
+def test_app_simple():
+    """
+    End to end app test
+
+    Ignore altair deprecation warning
+    """
+    at = streamlit.testing.v1.AppTest.from_file("tnd/app.py")
+    at.run()
+    assert not at.exception
 
 
 def test_estimator_simple():
