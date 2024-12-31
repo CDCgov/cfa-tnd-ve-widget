@@ -30,10 +30,10 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 - Individuals are vaccinated ($V$) with probability $v$, or unvaccinated ($U$)
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
-- Each individual has the possibility of becoming exposed $E$, and then has further conditional probabilities of becoming infected $I$, symptomatic $S_I$, and then tested $T_I$
-  - Conditional probabilities depend on vaccination status. E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[I|E,V] \times P[S_I|I,V] \times P[T_I|S_I,V]$.
+- Each individual has the possibility of becoming exposed $E$, and then has further conditional probabilities of becoming symptomatically infected $S_I$, and then tested $T_I$
+  - Conditional probabilities depend on vaccination status. E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[S_I|E,V] \times P[T_I|S_I,V]$.
   - There is only one opportunity for exposure per individual.
-  - The $S \to T$ transition represents a combination of seeking healthcare and then qualifying to receive a test.
+  - The $S_I \to T$ transition represents a combination of seeking healthcare and then qualifying to receive a test.
 - Every individual also has an independent probability to develop symptoms $S_X$ for reasons unrelated to infection with the pathogen of interest, and then a conditional probability to become tested $T_X$.
   - E.g., the probability that a vaccinated person will seek a test for reasons unrelated to infection is $P[T_X|S_X,V] \times P[S_X|V]$.
 - Testing
@@ -49,7 +49,7 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 We are interested in protection against symptomatic disease, conditioned on exposure:
 
 ```math
-\mathrm{VE}_{SP} = 1 - \frac{P[S_I | V, E]}{P[S_I | U, E]}
+\mathrm{VE}_{SP} = 1 - \frac{P[S_I|E,V]}{P[S_I|E,U]}
 ```
 
 #### Measured quantities
@@ -58,7 +58,7 @@ The expected values of the numbers of tested individuals, stratified by caused o
 
 ```math
 \begin{align*}
-\mathbb{E}[C_{VI}] &= n v \times P[T_I | S_I,V] \times P[S_I|I,V] \times P[I|E,V] \times P[E|V] \\
+\mathbb{E}[C_{VI}] &= n v \times P[T_I | S_I,V] \times P[S_I|E,V] \times P[E|V] \\
 \mathbb{E}[C_{VX}] &= n v \times P[T_X|S_X,V] \times P[S_X|V] \\
 \end{align*}
 ```
@@ -84,27 +84,25 @@ An estimator of the quantity of interest is:
 \hat{\mathrm{VE}} = 1 - \frac{C_{VP} C_{UN}}{C_{UP} C_{VN}}
 ```
 
-_Proposition_. This estimator is unbiased if:
+_Proposition 1_. If the conditional probability of testing given symptoms does not depend on the cause of symptoms, but can depend on vaccination status (i.e., vaccinated people seek testing for symptoms with a single probability, regardless of the cause of the symptoms), such that $P[T_I|S_I,V] = P[T_X|S_X,V]$ and $P[T_I|S_I,U] = P[T_X|S_X,U]$, then the conditional probabilities of testing do not affect the estimator.
 
-1. the test has perfect sensitivity and specificity, such that, e.g., $C_{VP} = C_{VI}$,
-2. the probability of exposure is identical among the vaccinated and unvaccinated, i.e., $P[E|V] = P[E|U]$,
-3. non-infection symptoms arise with equal probability regardless of vaccination status, i.e., $P[S_X|V] = P[S_X|U]$, and
-4. people seek testing for symptoms with a single probability, regardless of the cause of the symptoms and vaccination status, i.e., $P[T_I|S_I,V] = P[T_X|S_X,V] = P[T_I|S_I,U] = P[T_X|S_X,U]$.
+_Proof_. Write the two resulting probabilities as $P[T|V]$ and $P[T|U]$. Note that $P[T|V]$ appears in both $\mathbb{E}[C_{VI}]$ and $\mathbb{E}[C_{VX}]$ and thus factors out in both $\mathbb{E}[C_{VP}]$ and $\mathbb{E}[C_{VN}]$, and then cancels out in $\hat{\mathrm{VE}}$. The same is true for $P[T|U]$.
 
-_Proof_. Under the assumption of perfect performance, the expected value of the estimator is:
+_Proposition 2_. This estimator is unbiased if:
+
+1. the conditional probability of testing does not depend on the cause of symptoms,
+2. non-infection symptoms arise with equal probability regardless of vaccination status, i.e., $P[S_X|V] = P[S_X|U]$,
+3. the test has perfect sensitivity and specificity, such that, e.g., $C_{VP} = C_{VI}$, and
+4. the probability of exposure is identical among the vaccinated and unvaccinated, i.e., $P[E|V] = P[E|U]$.
+
+_Proof_. By the previous proposition, the first assumption lets us drop the testing probabilities. Under the assumption of perfect performance, we can replace the test results with actual infection status (e.g., $C_{VP} \to C_{VI}$) so that the expected value of the estimator simplifies to:
 
 ```math
-\mathbb{E}\left[\hat{\mathrm{VE}}\right] = 1 - \frac{
-    P[T_I|S_I,V] \times P[S_I|I,V] \times P[I|E,V] \times P[E|V]
-  }{
-    P[T_I|S_I,U] \times P[S_I|I,U] \times P[I|E,U] \times P[E|U]
-  } \times
-  \frac{P[T_X|S_X,U] \times P[S_X|U]}{P[T_X|S_X,V] \times P[S_X|V]}
+\mathbb{E}\left[\hat{\mathrm{VE}}\right] = 1 -
+  \frac{P[S_I|E,V] \times P[E|V] \times P[S_X|U]}{P[S_I|E,U] \times P[E|U] \times P[S_X|V]}
 ```
 
-Under the assumption of equal exposure rates, the fourth terms in the numerator in denominator cancel. Under the assumption of equal non-infection symptom probability, sixth terms cancel. Under the assumption of identical testing behavior, the first and fifth terms cancel.
-
-The remaining (second and third) terms collapse to:
+Under the assumption of equal exposure rates, the two $P[E|\cdot]$ terms cancel. Under the assumption of equal non-infection symptom probability, the two $P[S_X|\cdot]$ terms cancel. Thus:
 
 ```math
 \mathbb{E}\left[\hat{\mathrm{VE}}\right]
