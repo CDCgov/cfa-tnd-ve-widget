@@ -4,10 +4,10 @@
 
 VE is the fractional reduction in the probability of an adverse outcome due to vaccination. For purposes of a test-negative design (TND) study, we further define VE to be:
 
-- A direct effect, that is, the counterfactual reduction in risk that would occur if a single individual were vaccinated or not, and not the population-level effect of reducing transmission via a vaccination program
-- Protection against symptomatic disease that would lead to a diagnostic test, written $\mathrm{VE}_{SP}$ in Halloran, Longini, and Struchiner
-- Conditioned on some probability or amount of exposure to disease
-- Binary: Individuals are considered vaccinated or not (e.g., people who were vaccinated shortly before the outcome of interest may be classified as "unvaccinated" in the study, because they are presumed to have not yet been protected)
+- a direct effect, that is, the counterfactual reduction in risk that would occur if a single individual were vaccinated or not, and not the population-level effect of reducing transmission via a vaccination program,
+- Protection against symptomatic disease that would lead to a diagnostic test, written $\mathrm{VE}_{SP}$ in [Halloran, Longini, and Struchiner](https://doi.org/10.1007/978-0-387-68636-3),
+- conditioned on some probability or amount of exposure to disease, and
+- binary, that is, individuals are considered vaccinated or not (e.g., people who were vaccinated shortly before the outcome of interest may be classified as "unvaccinated" in the study, because they are presumed to have not yet been protected).
 
 ## Test-negative design
 
