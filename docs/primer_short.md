@@ -30,10 +30,10 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 - Individuals are vaccinated ($V$) with probability $v$, or unvaccinated ($U$)
   - Here we assume perfect reporting about vaccine status; i.e., there is no one who is actually vaccinated who appears in the "not vaccinated" arm, nor vice versa
-- Each individual has the possibility of becoming exposed $E$, and then has further conditional probabilities of becoming infected $I$, symptomatic $S_I$, and then tested $T_I$
-  - Conditional probabilities depend on vaccination status. E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[I|E,V] \times P[S_I|I,V] \times P[T_I|S_I,V]$.
+- Each individual has the possibility of becoming exposed $E$, and then has further conditional probabilities of becoming symptomatically infected $S_I$, and then tested $T_I$
+  - Conditional probabilities depend on vaccination status. E.g., the probability that a vaccinated person will receive a test is $P[E|V] \times P[S_I|E,V] \times P[T_I|S_I,V]$.
   - There is only one opportunity for exposure per individual.
-  - The $S \to T$ transition represents a combination of seeking healthcare and then qualifying to receive a test.
+  - The $S_I \to T$ transition represents a combination of seeking healthcare and then qualifying to receive a test.
 - Every individual also has an independent probability to develop symptoms $S_X$ for reasons unrelated to infection with the pathogen of interest, and then a conditional probability to become tested $T_X$.
   - E.g., the probability that a vaccinated person will seek a test for reasons unrelated to infection is $P[T_X|S_X,V] \times P[S_X|V]$.
 - Testing
@@ -49,7 +49,7 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 We are interested in protection against symptomatic disease, conditioned on exposure:
 
 ```math
-\mathrm{VE}_{SP} = 1 - \frac{P[S_I | V, E]}{P[S_I | U, E]}
+\mathrm{VE}_{SP} = 1 - \frac{P[S_I|E,V]}{P[S_I|E,U]}
 ```
 
 #### Measured quantities
@@ -58,7 +58,7 @@ The expected values of the numbers of tested individuals, stratified by caused o
 
 ```math
 \begin{align*}
-\mathbb{E}[C_{VI}] &= n v \times P[T_I | S_I,V] \times P[S_I|I,V] \times P[I|E,V] \times P[E|V] \\
+\mathbb{E}[C_{VI}] &= n v \times P[T_I | S_I,V] \times P[S_I|E,V] \times P[E|V] \\
 \mathbb{E}[C_{VX}] &= n v \times P[T_X|S_X,V] \times P[S_X|V] \\
 \end{align*}
 ```
@@ -95,14 +95,14 @@ _Proof_. Under the assumption of perfect performance, the expected value of the 
 
 ```math
 \mathbb{E}\left[\hat{\mathrm{VE}}\right] = 1 - \frac{
-    P[T_I|S_I,V] \times P[S_I|I,V] \times P[I|E,V] \times P[E|V]
+    P[T_I|S_I,V] \times P[S_I|E,V] \times P[E|V]
   }{
-    P[T_I|S_I,U] \times P[S_I|I,U] \times P[I|E,U] \times P[E|U]
+    P[T_I|S_I,U] \times P[S_I|E,U] \times P[E|U]
   } \times
   \frac{P[T_X|S_X,U] \times P[S_X|U]}{P[T_X|S_X,V] \times P[S_X|V]}
 ```
 
-Under the assumption of equal exposure rates, the fourth terms in the numerator in denominator cancel. Under the assumption of equal non-infection symptom probability, sixth terms cancel. Under the assumption of identical testing behavior, the first and fifth terms cancel.
+Under the assumption of equal exposure rates, the two $P[E|\cdot]$ terms cancel. Under the assumption of equal non-infection symptom probability, the two $P[S_X|\cdot]$ terms cancel. Under the assumption of identical testing behavior, the four $P[T_\cdot|\cdot]$ terms cancel.
 
 The remaining (second and third) terms collapse to:
 
