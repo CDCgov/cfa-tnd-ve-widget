@@ -4,6 +4,11 @@
 
 Introduction to the mathematics of test-negative design (TND) and an interactive tool for understanding the implications of the TND estimator of vaccine efficacy
 
+## Getting started
+
+- Install the `tnd` package using poetry
+- Run the app with `make`
+
 ## Project Admin
 
 - Scott Olesen <ulp7@cdc.gov> (CDC/CFA)

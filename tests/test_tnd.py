@@ -1,32 +1,35 @@
+import pytest
+import streamlit.testing.v1
+
 import tnd
 
 
-class TestEVRREstimator:
-    def test_simple(self):
-        """
-        Assume:
-          - perfect test performance
-          - exposure probability 1.0
-          - same infection->test probability
-        """
-        eps = 1.0
-        lam_v = 0.50
-        lam_u = 0.75
-        mu_i = 0.4
-        mu_x = 0.5
-        current = tnd.ev_estimator(
-            eps_v=eps,
-            eps_u=eps,
-            lam_v=lam_v,
-            lam_u=lam_u,
-            mu_vi=mu_i,
-            mu_ui=mu_i,
-            mu_vx=mu_x,
-            mu_ux=mu_x,
-            sens=1.0,
-            spec=1.0,
-        )
+@pytest.mark.filterwarnings(
+    r"ignore:\s+Deprecated since `altair=5.5.0`. Use altair.theme instead."
+)
+def test_app_simple():
+    """
+    End to end app test
 
-        OR = lam_v / lam_u * (1 - lam_u) / (1 - lam_v)
+    Ignore altair deprecation warning
+    """
+    at = streamlit.testing.v1.AppTest.from_file("tnd/app.py")
+    at.run()
+    assert not at.exception
 
-        assert current == 1.0 - OR
+
+def test_estimator_simple():
+    """
+    Assume:
+      - perfect test performance
+      - exposure probability 1.0
+    """
+    pe = 1.0
+    psev = 0.50
+    pseu = 0.75
+    psx = 0.4
+    current = tnd.estimator(
+        pev=pe, peu=pe, psev=psev, pseu=pseu, psx=psx, sens=1.0, spec=1.0
+    )
+
+    assert current == 1.0 - psev / pseu

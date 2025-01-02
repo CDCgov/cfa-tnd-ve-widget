@@ -1,52 +1,47 @@
 import numpy as np
 
 
-def ev_estimator(
-    eps_v: float | np.ndarray,
-    eps_u: float | np.ndarray,
-    lam_v: float | np.ndarray,
-    lam_u: float | np.ndarray,
-    mu_vi: float | np.ndarray,
-    mu_ui: float | np.ndarray,
-    mu_vx: float | np.ndarray,
-    mu_ux: float | np.ndarray,
+def estimator(
+    pev: float | np.ndarray,
+    peu: float | np.ndarray,
+    psev: float | np.ndarray,
+    pseu: float | np.ndarray,
+    psx: float | np.ndarray,
     sens: float | np.ndarray,
     spec: float | np.ndarray,
 ) -> float | np.ndarray:
     """Expected value of risk ratio estimator
 
+    Assume that conditional probability of testing does not depend on the cause of symptoms.
+
     Args:
-        eps_v (np.ndarray): exposure probability among the vaccinated
-        eps_u (np.ndarray): exposure probability among the unvaccinated
-        lam_v (np.ndarray): infection probability among the exposed vaccinated
-        lam_u (np.ndarray): infection probability among the exposed unvaccinated
-        mu_vi (np.ndarray): receive test probability among the infected vaccinated
-        mu_ui (np.ndarray): receive test probability among the infected unvaccinated
-        mu_vx (np.ndarray): receive test probability among the uninfected vaccinated
-        mu_ux (np.ndarray): receive test probability among the uninfected unvaccinated
+        pev (np.ndarray): probability of exposure among the vaccinated
+        peu (np.ndarray): probability of exposure among the unvaccinated
+        psev (np.ndarray): probability of symptomatic infection given exposure among the vaccinated
+        pseu (np.ndarray): probability of symptomatic infection given exposure among the unvaccinated
+        psx (np.ndarray): probability of symptoms without exposure
         sens (np.ndarray): test sensitivity
         spec (np.ndarray): test specificity
 
     Returns:
         np.ndarray: expected value
     """
-    # expected proportions of true infection status (i=infected or x=not)
-    # by vaccination status (v=vaccinated, u=not)
-    vi = eps_v * lam_v
-    vx = 1.0 - vi
-    ui = eps_u * lam_u
-    ux = 1.0 - ui
+    # counts of those individuals who are:
+    # - vaccinated (v) or unvaccinated (u)
+    # - infected (i) or not (x)
+    # excluding factors of:
+    # - population size
+    # - v or (1-v)
+    # - conditional testing probabilities
+    vi = psev * pev
+    vx = psx
+    ui = pseu * peu
+    ux = psx
 
-    # proportions of those individuals who are tested (t)
-    tvi = vi * mu_vi
-    tvx = vx * mu_vx
-    tui = ui * mu_ui
-    tux = ux * mu_ux
-
-    # expected proportions of test outcomes (p=positive, n=negative)
-    pv = tvi * sens + tvx * (1.0 - spec)
-    nv = tvi * (1.0 - sens) + tvx * spec
-    pu = tui * sens + tux * (1.0 - spec)
-    nu = tui * (1.0 - sens) + tux * spec
+    # test outcomes (p=positive, n=negative)
+    pv = sens * vi + (1.0 - spec) * vx
+    nv = (1.0 - sens) * vi + spec * vx
+    pu = sens * ui + (1.0 - spec) * ux
+    nu = (1.0 - sens) * ui + spec * ux
 
     return 1.0 - (pv * nu) / (pu * nv)
