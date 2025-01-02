@@ -40,20 +40,30 @@ def percent_slider(
 
 def make_model_tab(g: DeltaGenerator, n_x: int = 101):
     # default values
-    pe = 0.1
-    psx = 0.2
+    default_pe = 0.15
+    default_pseu = 0.50
+    psx = 0.15
 
     g.header("Input parameters")
-    pev = percent_slider(g, "Vaccinated: Probability exposed", default=pe, key="pev")
-    peu = percent_slider(g, "Unvaccinated: Probability exposed", default=pe, key="peu")
+    pev = percent_slider(
+        g, "Vaccinated: Probability exposed", default=default_pe, key="pev"
+    )
+    peu = percent_slider(
+        g, "Unvaccinated: Probability exposed", default=default_pe, key="peu"
+    )
     pseu = percent_slider(
-        g, "Unvaccinated: Probability symptomatic infected given exposed", default=0.25
+        g,
+        "Unvaccinated: Probability symptomatic infection given exposed",
+        default=default_pseu,
     )
     psx = percent_slider(
-        g, "Probability of non-infection symptoms", min_value=0.01, default=0.2
+        g,
+        "Probability of non-infection symptoms",
+        min_value=0.01,
+        default=default_pe * default_pseu,
     )
     sens = percent_slider(g, "Sensitivity", min_value=0.01, default=0.95)
-    spec = percent_slider(g, "Specificity", min_value=0.01, default=0.98)
+    spec = percent_slider(g, "Specificity", min_value=0.01, default=0.99)
 
     true_ve = np.linspace(0.0, 1.0, num=n_x)
     psev = (1.0 - true_ve) * pseu
