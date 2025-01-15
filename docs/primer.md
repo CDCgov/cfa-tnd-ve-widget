@@ -247,13 +247,13 @@ As above, we will continue to assume that $\lambda_{NV} = \lambda_{NU}$ and $\pi
 
 $$= 1 - \left( 1 - \varphi \right) - \varphi\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}\frac{\pi_{FV}}{\pi_{FU}} = \varphi\left( 1 - \theta_{\pi}\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} \right)$$
 
-Because the term $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}$ is not necessarily equal to θ\_$\lambda$, the TND VE estimate of $1 - \mathrm{OR}$ no longer necessarily reduces to the correct value of $\varphi(1 - \theta)$. In fact, $1 - \mathrm{OR}$ only reduces to the correct value of $\varphi(1 + \theta)$ under one of the following conditions:
+Because the term $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}$ is not necessarily equal to $\theta_{\lambda}$, the TND VE estimate of $1 - \mathrm{OR}$ no longer necessarily reduces to the correct value of $\varphi(1 - \theta)$. In fact, $1 - \mathrm{OR}$ only reduces to the correct value of $\varphi(1 + \theta)$ under one of the following conditions:
 
 - $\lambda_{FV} = \lambda_{FU}$, that is, vaccination does not affect the probability of infection given exposure to the focal pathogen. In this case, $\mathrm{VE} = \varphi\left( 1 - \theta_{\pi} \right) = \varphi\left( 1 - \theta \right)$ because $\theta = \theta_{\lambda}\theta_{\pi} = 1*\theta_{\pi} = \theta_{\pi}$. Note that vaccination may still affect the probability of ARI given infection, $\pi$. Thus, $1 - \mathrm{OR}$ can be unbiased under "leaky" vaccination, so long as vaccination reduces the probability of ARI, not infection itself.
 
 - $\lambda_{FV} = 0$, that is, vaccination provides perfect protection against infection given exposure to the focal pathogen. In this case, $\mathrm{VE} = \varphi = \varphi\left( 1 - \theta \right)$ because $\theta = \theta_{\lambda}\theta_{\pi} = 0*\theta_{\pi} = 0$. Note that vaccination may still affect the probability of ARI given infection, $\pi$, although this is meaningless because successfully vaccinated people never get infected. As such, this condition is equivalent to all-or-nothing vaccination, in which $\varphi$ ≤ 1 and θ = 0.
 
-Outside of these conditions, the value of the term $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}$ varies in time, so it cannot equal the constant value θ*$\lambda$. At best, this term can equal θ*$\lambda$ at exactly one time point, meaning $1 - \mathrm{OR}$ will be unbiased at only one time point. We can show that this time point is $t = 0$ using L'Hôpitál's Rule:
+Outside of these conditions, the value of the term $\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}}$ varies in time, so it cannot equal the constant value $\theta_{\lambda}$. At best, this term can equal $\theta_{\lambda}$ at exactly one time point, meaning $1 - \mathrm{OR}$ will be unbiased at only one time point. We can show that this time point is $t = 0$ using L'Hôpitál's Rule:
 
 $$\lim_{t \rightarrow 0}\frac{1 - e^{- \varepsilon_{FV}\lambda_{FV}t}}{1 - e^{- \varepsilon_{FU}\lambda_{FU}t}} = \lim_{t \rightarrow 0}\frac{\varepsilon_{FV}\lambda_{FV}e^{- \varepsilon_{FV}\lambda_{FV}t}}{\varepsilon_{FU}\lambda_{FU}e^{- \varepsilon_{FU}\lambda_{FU}t}} = \frac{\varepsilon_{FV}\lambda_{FV}}{\varepsilon_{FU}\lambda_{FU}} = \frac{\lambda_{FV}}{\lambda_{FU}} = \theta_{\lambda}$$
 
@@ -332,15 +332,15 @@ Only slight changes to our mathematical language are required:
 - $\pi$ = \[parameter\] probability of ARI given infection (may depend on F vs. N and/or X)
 - $\mu$ = \[parameter\] probability of seeking care given ARI (may depend on X but not F vs. N)
 - $\theta_\lambda = \frac{\lambda_{F,X=x}}{\lambda_{F,X=0}}$ \[parameter\] reduction in risk of infection with the focal pathogen given exposure due to antibody titer x
-- $\theta_\pi = \frac{\pi_{F,X=x}}{\pi_{\text{F,X=0}}$ \[parameter\] vaccine reduction in risk of ARI given infection with the focal pathogen due to antibody titer x
-- $\theta = \theta_\lambda \theta_\pi$: \[parameter\] vaccine reduction in risk of ARI due to the focal pathogen given exposure
+- $\theta_\pi = \frac{\pi_{F,X=x}}{\pi_{F,X=0}}$ \[parameter\] reduction in risk of ARI given infection with the focal pathogen due to antibody titer x
+- $\theta = \theta_\lambda \theta_\pi$: \[parameter\] reduction in risk of ARI due to the focal pathogen given exposure due to antibody titer x
 - $t$ = time since the disease season began
 
 ### TND Data
 
 For any particular antibody titer $X=x$, a subset of the data collected from the TND design will look like:
 
-|                    |  Vaccinated   |  Unvaccinated   |
+|                    |   Titer = x   |    Titer = 0    |
 | ------------------ | ------------- | --------------- |
 | Focal Pathogen     | $C_{F,X=x}$   | $C_{F,X=0}$     |
 | Non-Focal Pathogen | $C_{N,X=x}$   | $C_{N,X=0}$     |
@@ -361,13 +361,13 @@ Antibody titer is not only the cause immunological action inside an individual, 
 Just as for vaccination, the counts of people in each quadrant of the TND accumulate through time, during which dynamic processes occur. These dynamic processes can ultimately bias the TND-derived estimate of protection. So we remove these dynamics via assumption:
 
 - No parameters change through time. For example, force of exposure $\varepsilon$ is constant.
-- All people included in the TND were sampled over a very short period of time $\Delta t$.
+- All people included in the study are sampled over a very short period of time $\Delta t$.
 
 Notice we need not consider when vaccines were administered, how they wane, or whether natural infection confers protection. This is because we only care about titer at the time of exposure, not how that titer came to be.
 
 ### Protection Defined
 
-Rather than a single number, protection is now a function of antibody titer $P(X=x)$, whose value at is one minus the risk ratio of infection for antibody titer $X=x$ vs. $X=0$.
+Rather than a single number, protection is now a function of antibody titer $P(X=x)$, whose value is one minus the risk ratio of severe infection for antibody titer $X=x$ vs. $X=0$.
 
 $$
 \begin{align*}
@@ -395,20 +395,19 @@ C_{N,X=0} &= \varepsilon_{N,X=0}\Delta t D(0)\lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0}
 \end{align*}
 $$
 
-Similar to the vaccine case, we now postulate that one minus the odds ratio of $X=x$ given exposure is an unbiased estimator of the protection conferred by antibody titer $X=x$.
+Similar to the vaccine case, we postulate that one minus the odds ratio of $X=x$ is an unbiased estimator of the protection conferred by antibody titer $X=x$.
 
 $$
 \begin{align*}
 \mathrm{Protection(X=x)} &= 1 - \frac{C_{F,X=x}C_{N,X=0}}{C_{F,X=0}C_{N,X=x}} \\
 &= 1 - \frac{\varepsilon_{F,X=x}\Delta t D(x)\lambda_{F,X=x}\pi_{F,X=x}\mu_{X=x}\varepsilon_{N,X=0}\Delta t D(0)\lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0}}{\varepsilon_{F,X=0}\Delta t D(0)\lambda_{F,X=0}\pi_{F,X=0}\mu_{X=0}\varepsilon_{N,X=x}\Delta t D(x)\lambda_{N,X=x}\pi_{N,X=x}\mu_{X=x}} \\
 &= 1 - \frac{\varepsilon_{F,X=x}\lambda_{F,X=x}\pi_{F,X=x}\varepsilon_{N,X=0}\lambda_{N,X=0}\pi_{N,X=0}}{\varepsilon_{F,X=0}\lambda_{F,X=0}\pi_{F,X=0}\varepsilon_{N,X=x}\lambda_{N,X=x}\pi_{N,X=x}} \\
-&= 1 - \frac{\varepsilon_{F,X=x}\lambda_{F,X=x}\pi_{F,X=x}\varepsilon_{N,X=0}\lambda_{N,X=0}\pi_{N,X=0}}{\varepsilon_{F,X=0}\lambda_{F,X=0}\pi_{F,X=0}\varepsilon_{N,X=x}\lambda_{N,X=x}\pi_{N,X=x}} \\
 \end{align*}
 $$
 
-By natural cancellation, we see that differential care seeking given ARI by antibody titer ($\mu$) is inconsequential. So is the distribution of antibody titers $D$.
+By natural cancellation, we see that differential care seeking by antibody titer ($\mu$) is inconsequential. So is the distribution of antibody titers $D$.
 
-By assuming that exposure, susceptibility, and severity of non-focal causes of ARI do not depend on antibody titer (i.e. $\varepsilon_{N,X=x}) = \varepsilon_{N,X=0}$, $\lambda_{N,X=x}) = \lambda_{N,X=0}$, and $\pi_{N,X=x}) = \pi_{N,X=0}$), we further cancel to obtain:
+By assuming that exposure, susceptibility, and severity of non-focal causes of ARI do not depend on antibody titer (i.e. $\varepsilon_{N,X=x} = \varepsilon_{N,X=0}$, $\lambda_{N,X=x} = \lambda_{N,X=0}$, and $\pi_{N,X=x} = \pi_{N,X=0}$), we further cancel to obtain:
 
 $$
 \begin{align*}
@@ -422,14 +421,15 @@ $$
 \begin{align*}
 \mathrm{Protection(X=x)} &= 1 - \frac{\lambda_{F,X=x}\pi_{F,X=x}}{\lambda_{F,X=0}\pi_{F,X=0}} \\
 &= 1 - \theta_{\lambda}\theta_{\pi} \\
+&= 1 - \theta
 \end{align*}
 $$
 
-Thus, under the above assumptions, one minus the odds ratio of $X=x$ given exposure is an unbiased estimator of the protection conferred by antibody titer $X=x$.
+Thus, under the above assumptions, one minus the odds ratio of $X=x$ is an unbiased estimator of the protection conferred by antibody titer $X=x$.
 
 ### When TND Fails for Antibody Titer
 
-As with vaccination, many assumptions were required to make $1 - OR$ an unbiased estimator of $P(X=x)$. Now we will explore how relaxing some of these assumptions lead to bias.
+As with vaccination, many assumptions were required to make $1 - OR$ an unbiased estimator of $P(X=x)$. Now we explore how relaxing some of these assumptions creates bias.
 
 #### Force of Exposure Differs by Antibody Titer
 
@@ -442,29 +442,29 @@ $$
 \end{align*}
 $$
 
-As was the case for vaccination, the term $\frac{\varepsilon_{F,X=x}\varepsilon_{N,X=0}}{\varepsilon_{F,X=0}\varepsilon_{N,X=x}}$ no longer reduces to 1 by assumption, so the estimator $1 - OR$ no longer _necessarily_ reduces to the correct value of $1 - \theta$. However, if antibody titer $X=x$ correlates with force of exposure identically for both pathogens, such that $\varepsilon_{F,X=x} \neq \varepsilon_{F,X=0}$ and such that $\varepsilon_{N,X=x} \neq \varepsilon_{N,X=0}$ but $\frac{\varepsilon_{F,X=x}}{\varepsilon_{F,X=0}} = \frac{\varepsilon_{N,X=x}}{\varepsilon_{N,X=0}}$, then $1 - OR$ is still an unbiased estimator of $P(X=x)$. Otherwise, $1 - OR$ is biased in a way that depends on the individual values of the $\varepsilon$ parameters.
+The term $\frac{\varepsilon_{F,X=x}\varepsilon_{N,X=0}}{\varepsilon_{F,X=0}\varepsilon_{N,X=x}}$ no longer reduces to 1 by assumption, so the estimator $1 - OR$ no longer _necessarily_ reduces to the correct value of $1 - \theta$. However, if antibody titer $X=x$ correlates with force of exposure identically for both pathogens, such that $\varepsilon_{F,X=x} \neq \varepsilon_{F,X=0}$ and $\varepsilon_{N,X=x} \neq \varepsilon_{N,X=0}$ but $\frac{\varepsilon_{F,X=x}}{\varepsilon_{F,X=0}} = \frac{\varepsilon_{N,X=x}}{\varepsilon_{N,X=0}}$, then $1 - OR$ is still an unbiased estimator of $P(X=x)$. Otherwise, $1 - OR$ is biased in a way that depends on the individual values of the $\varepsilon$ parameters.
 
 #### TND Data Are Collected over a Time Period
 
-In the vaccination case, time dynamics cause bias when the relative rates of observing vaccinated vs. unvaccinated quadrants of the TND change. A key example was the case where natural infection protects against reinfection. Because unvaccinated people are more likely to be naturally infected, their rate of observation declines faster through time than the rate of observation for vaccinated people. This leads to underestimates of vaccine efficacy (with a few exceptional edge cases depending on vaccine mechanism of action). This particular example was easy to derive mathematically, and it illustrated the broader point that a changing _relative_ rate of observation of vaccinated vs. unvaccinated people through time causes bias in the TND estimator.
+In the vaccination case, time dynamics cause bias when the relative rates of observing vaccinated vs. unvaccinated quadrants of the TND change. A key example was the case where natural infection protects against reinfection. Because unvaccinated people are more likely to be naturally infected, their rate of observation declines faster through time than the rate of observation for vaccinated people. This leads to underestimates of vaccine efficacy (with a few exceptional edge cases depending on vaccine mechanism of action). This particular example was easy to derive mathematically, and it illustrated the broader point that changing the _relative_ rate of observation of vaccinated vs. unvaccinated people through time causes bias in the TND estimator.
 
-Similarly, time dynamics can cause biases in the TND estimator of protection afforded by antibodies. Thus, relaxing the assumption that all people in the study are sampled in a short time window $\Delta t$ can cause bias. Although a specific example is harder to pinpoint, general reasoning will suffice. According to transmission dynamics, the force of exposure can vary through time, and differently for the focal vs. non-focal pathogen. Moreover, the distribution of antibody titers in the population $D$ also changes through time, as individuals experience boosting and waning.
+Similarly, time dynamics can cause biases in the TND estimator of protection afforded by antibodies. Rather than pinpointing a specific example like we did for vaccination, we merely relax the assumption that all people in the study are sampled in a short time window $\Delta t$. The force of exposure can vary through time, differently for the focal vs. non-focal pathogen. Moreover, the distribution of antibody titers in the population $D$ also changes through time, as individuals experience boosting and waning.
 
-Thus, we have $\varepsilon (t)$ and $D(x, t)$. Suppose that individuals are observed over the time window from $t_1$ to $t_2$. Even if we continue to invoke other simplifying assumptions above, the expanded time window of collection means that:
+Thus, we have $\varepsilon (t)$ and $D(x, t)$. Suppose that individuals are observed over the time window from $t_1$ to $t_2$. Even if we continue to invoke other simplifying assumptions, the expanded time window of collection means that:
 
 $$
 \begin{align*}
 \mathrm{Protection(X=x)} &= 1 - \frac{C_{F,X=x}C_{N,X=0}}{C_{F,X=0}C_{N,X=x}} \\
-&= 1 - \frac{\int_{t1}^{t2}\varepsilon_{F,X=x}(t)D(x,t) \,dt\ \lambda_{F,X=x}\pi_{F,X=x}\mu_{X=x}\int_{t1}^{t2}\varepsilon_{N,X=0}(t)D(0,t) \,dt\ \lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0}}{\int_{t1}^{t2}\varepsilon_{F,X=0}(t)D(0,t) \,dt\ \lambda_{F,X=0}\pi_{F,X=0}\mu_{X=0}\int_{t1}^{t2}\varepsilon_{N,X=x}(t)D(x,t) \,dt\ \lambda_{N,X=x}\pi_{N,X=x}\mu_{X=x}} \\
-&= 1 - \frac{\int_{t1}^{t2}\varepsilon_{F,X=x}(t)D(x,t) \,dt\ \int_{t1}^{t2}\varepsilon_{N,X=0}(t)D(0,t) \,dt\ }{\int_{t1}^{t2}\varepsilon_{F,X=0}(t)D(0,t) \,dt\ \int_{t1}^{t2}\varepsilon_{N,X=x}(t)D(x,t) \,dt\ }\theta \\
+&= 1 - \frac{\int_{t1}^{t2}\varepsilon_{F,X=x}(t)D(x,t) dt\ \lambda_{F,X=x}\pi_{F,X=x}\mu_{X=x}\int_{t1}^{t2}\varepsilon_{N,X=0}(t)D(0,t) dt\ \lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0}}{\int_{t1}^{t2}\varepsilon_{F,X=0}(t)D(0,t) dt\ \lambda_{F,X=0}\pi_{F,X=0}\mu_{X=0}\int_{t1}^{t2}\varepsilon_{N,X=x}(t)D(x,t) dt\ \lambda_{N,X=x}\pi_{N,X=x}\mu_{X=x}} \\
+&= 1 - \frac{\int_{t1}^{t2}\varepsilon_{F,X=x}(t)D(x,t) dt\ \int_{t1}^{t2}\varepsilon_{N,X=0}(t)D(0,t) dt\ }{\int_{t1}^{t2}\varepsilon_{F,X=0}(t)D(0,t) dt\ \int_{t1}^{t2}\varepsilon_{N,X=x}(t)D(x,t) dt\ }\theta \\
 \end{align*}
 $$
 
-Clearly this does not reduce to the correct value of $1 - \theta$ in general. Although this could reduce to $1 - \theta$ if the time-dynamic force of exposure is always equivalent between the focal and non-focal pathogens (i.e. $\varepsilon_{F}(t) = \varepsilon_{N}(t), \forall t \in [t_1, t_2]$), this was not one of the original assumptions and seems highly unlikely.
+Clearly this does not reduce to the correct value of $1 - \theta$ in general. This could reduce to $1 - \theta$ if the time-dynamic force of exposure is always equivalent between the focal and non-focal pathogens (i.e. $\varepsilon_{F}(t) = \varepsilon_{N}(t), \forall t \in [t_1, t_2]$), but this seems highly unlikely.
 
 #### Other Biasing Conditions
 
-We could continue to consider other biasing conditions: when the force of exposure differs by antibody titer _and_ TND data are collected over a time periood, when the diagnostic test for the focal pathogen has imperfect specificity and/or sensitivity, etc. But there is no way to be exhaustive. The above should suffice to show that estimating protection afforded by a continuous antibody titer via the TND design is largely similar to, but at times simpler than, the analogous problem of vaccine efficacy.
+We could continue to consider other biasing conditions: when the force of exposure differs by antibody titer _and_ TND data are collected over a time period, when the diagnostic test for the focal pathogen has imperfect specificity and/or sensitivity, etc. But we need not be exhaustive. The above suffices to show that estimating protection afforded by a continuous antibody titer via TND is largely similar to, but sometimes simpler than, the analogous problem of vaccine efficacy.
 
 ## Statistical Estimation
 
