@@ -311,7 +311,7 @@ $1 - \mathrm{OR}$ from a TND study is an unbiased estimator of VE only under a r
 - The transmission and/or disease caused by the focal vs. non-focal pathogens need not be identical, but they must respond to vaccination identically (except for $\lambda$ and $\pi$), to avoid bias.
 - Dynamics cause bias not because the rates of observing TND quadrants change through time, but because the _relative_ rates of observing vaccinated vs. unvaccinated TND quadrants change through time.
 
-Using these conclusions and the mathematical language developed above, the biasing effect of other factors not discussed here (e.g. vaccine waning through time) on VE should be more easily investigated.
+Using these conclusions and the mathematical language developed above, the biasing effect of other factors not discussed here (e.g. vaccine waning through time, imperfect specificity and sensitivity of the diagnostic test, etc.) on VE should be more easily investigated.
 
 ## Protection from Antibodies
 
