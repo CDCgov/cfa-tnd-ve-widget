@@ -333,7 +333,7 @@ Only slight changes to our mathematical language are required:
 - $\mu$ = \[parameter\] probability of seeking care given ARI (may depend on X but not F vs. N)
 - $\theta_\lambda = \frac{\lambda_{F,X=x}}{\lambda_{F,X=0}}$ \[parameter\] reduction in risk of infection with the focal pathogen given exposure due to antibody titer x
 - $\theta_\pi = \frac{\pi_{F,X=x}}{\pi_{F,X=0}}$ \[parameter\] reduction in risk of ARI given infection with the focal pathogen due to antibody titer x
-- $\theta = \theta_\lambda \theta_\pi$: \[parameter\] reduction in risk of ARI due to the focal pathogen given exposure due to antibody titer x
+- $\theta = \theta_\lambda \theta_\pi$ \[parameter\] reduction in risk of ARI due to the focal pathogen given exposure due to antibody titer x
 - $t$ = time since the disease season began
 
 ### TND Data
