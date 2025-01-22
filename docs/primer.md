@@ -317,6 +317,8 @@ Using these conclusions and the mathematical language developed above, the biasi
 
 We now switch the intervention responsible for protection from binary vaccination to continous antibody titer. Rather than a single number, protection is now a function of antibody titer. However, for any mathematical demonstration, it suffices to consider just a single arbitrary titer.
 
+While antibodies are the only continuous variable associated with protection considered here, there may be many others (e.g. other components of the immune system) at play as well. This primer is agnostic to those additional variables.
+
 Importantly, we are concerned with antibody titer _at the time of exposure_, regardless of when exposure occurs. As a result, we discard several complicating factors from the vaccination case (e.g. distinguishing natural infection- vs. vaccine-stimulated protection, leaky vs. all-or-nothing protection, etc.). This actually makes antibody-mediated protection an easier problem than vaccine-stimulated protection!
 
 ### Notation
@@ -372,7 +374,7 @@ Rather than a single number, protection is now a function of antibody titer $P(X
 $$
 \begin{align*}
 \mathrm{P(X=x)} &= 1 - \frac{P(F|X=x)}{P(F|X=0)} \\
-&= 1 - \frac{\varepsilon_{F,X=x}\lambda_{F,X=x}\pi_{F,X=x}}{\varepsilon_{F,X=0}\lambda_{F,X=0}\pi_{F,X=0}} \\
+&= 1 - \frac{\varepsilon_{F,X=x}~\lambda_{F,X=x}~\pi_{F,X=x}}{\varepsilon_{F,X=0}~\lambda_{F,X=0}~\pi_{F,X=0}} \\
 &= 1 - \frac{\varepsilon_{F,X=x}}{\varepsilon_{F,X=0}}\theta \\
 &= 1 - \theta
 \end{align*}
@@ -388,10 +390,10 @@ According to the assumptions we've made, the counts of people in the TND at time
 
 $$
 \begin{align*}
-C_{F,X=x} &= \varepsilon_{F,X=x}\Delta t D(x)\lambda_{F,X=x}\pi_{F,X=x}\mu_{X=x} \\
-C_{F,X=0} &= \varepsilon_{F,X=0}\Delta t D(0)\lambda_{F,X=0}\pi_{F,X=0}\mu_{X=0} \\
-C_{N,X=x} &= \varepsilon_{N,X=x}\Delta t D(x)\lambda_{N,X=x}\pi_{N,X=x}\mu_{X=x} \\
-C_{N,X=0} &= \varepsilon_{N,X=0}\Delta t D(0)\lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0} \\
+C_{F,X=x} &= \varepsilon_{F,X=x}~\Delta t ~D(x)~\lambda_{F,X=x}~\pi_{F,X=x}~\mu_{X=x} \\
+C_{F,X=0} &= \varepsilon_{F,X=0}~\Delta t ~D(0)~\lambda_{F,X=0}~\pi_{F,X=0}~\mu_{X=0} \\
+C_{N,X=x} &= \varepsilon_{N,X=x}~\Delta t ~D(x)~\lambda_{N,X=x}~\pi_{N,X=x}~\mu_{X=x} \\
+C_{N,X=0} &= \varepsilon_{N,X=0}~\Delta t ~D(0)~\lambda_{N,X=0}~\pi_{N,X=0}~\mu_{X=0} \\
 \end{align*}
 $$
 
@@ -399,9 +401,9 @@ Similar to the vaccine case, we postulate that one minus the odds ratio of $X=x$
 
 $$
 \begin{align*}
-\mathrm{Protection(X=x)} &= 1 - \frac{C_{F,X=x}C_{N,X=0}}{C_{F,X=0}C_{N,X=x}} \\
-&= 1 - \frac{\varepsilon_{F,X=x}\Delta t D(x)\lambda_{F,X=x}\pi_{F,X=x}\mu_{X=x}\varepsilon_{N,X=0}\Delta t D(0)\lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0}}{\varepsilon_{F,X=0}\Delta t D(0)\lambda_{F,X=0}\pi_{F,X=0}\mu_{X=0}\varepsilon_{N,X=x}\Delta t D(x)\lambda_{N,X=x}\pi_{N,X=x}\mu_{X=x}} \\
-&= 1 - \frac{\varepsilon_{F,X=x}\lambda_{F,X=x}\pi_{F,X=x}\varepsilon_{N,X=0}\lambda_{N,X=0}\pi_{N,X=0}}{\varepsilon_{F,X=0}\lambda_{F,X=0}\pi_{F,X=0}\varepsilon_{N,X=x}\lambda_{N,X=x}\pi_{N,X=x}} \\
+\mathrm{Protection(X=x)} &= 1 - \frac{C_{F,X=x}~C_{N,X=0}}{C_{F,X=0}~C_{N,X=x}} \\
+&= 1 - \frac{\varepsilon_{F,X=x}~\Delta t ~D(x)~\lambda_{F,X=x}~\pi_{F,X=x}~\mu_{X=x}~\varepsilon_{N,X=0}~\Delta t ~D(0)~\lambda_{N,X=0}~\pi_{N,X=0}~\mu_{X=0}}{\varepsilon_{F,X=0}~\Delta t ~D(0)~\lambda_{F,X=0}~\pi_{F,X=0}~\mu_{X=0}~\varepsilon_{N,X=x}~\Delta t ~D(x)~\lambda_{N,X=x}~\pi_{N,X=x}~\mu_{X=x}} \\
+&= 1 - \frac{\varepsilon_{F,X=x}~\lambda_{F,X=x}~\pi_{F,X=x}~\varepsilon_{N,X=0}~\lambda_{N,X=0}~\pi_{N,X=0}}{\varepsilon_{F,X=0}~\lambda_{F,X=0}~\pi_{F,X=0}~\varepsilon_{N,X=x}~\lambda_{N,X=x}~\pi_{N,X=x}} \\
 \end{align*}
 $$
 
@@ -411,7 +413,7 @@ By assuming that exposure, susceptibility, and severity of non-focal causes of A
 
 $$
 \begin{align*}
-\mathrm{Protection(X=x)} &= 1 - \frac{\varepsilon_{F,X=x}\lambda_{F,X=x}\pi_{F,X=x}}{\varepsilon_{F,X=0}\lambda_{F,X=0}\pi_{F,X=0}} \\
+\mathrm{Protection(X=x)} &= 1 - \frac{\varepsilon_{F,X=x}~\lambda_{F,X=x}~\pi_{F,X=x}}{\varepsilon_{F,X=0}~\lambda_{F,X=0}~\pi_{F,X=0}} \\
 \end{align*}
 $$
 
@@ -419,7 +421,7 @@ And finally, by assuming that exposure to the focal pathogen does not depend on 
 
 $$
 \begin{align*}
-\mathrm{Protection(X=x)} &= 1 - \frac{\lambda_{F,X=x}\pi_{F,X=x}}{\lambda_{F,X=0}\pi_{F,X=0}} \\
+\mathrm{Protection(X=x)} &= 1 - \frac{\lambda_{F,X=x}~\pi_{F,X=x}}{\lambda_{F,X=0}~\pi_{F,X=0}} \\
 &= 1 - \theta_{\lambda}\theta_{\pi} \\
 &= 1 - \theta
 \end{align*}
@@ -437,8 +439,8 @@ It is possible that force of exposure to pathogens (either focal or non-focal) m
 
 $$
 \begin{align*}
-\mathrm{Protection(X=x)} &= 1 - \frac{\varepsilon_{F,X=x}\lambda_{F,X=x}\pi_{F,X=x}\varepsilon_{N,X=0}}{\varepsilon_{F,X=0}\lambda_{F,X=0}\pi_{F,X=0}\varepsilon_{N,X=x}} \\
-&= 1 - \frac{\varepsilon_{F,X=x}\varepsilon_{N,X=0}}{\varepsilon_{F,X=0}\varepsilon_{N,X=x}}\theta \\
+\mathrm{Protection(X=x)} &= 1 - \frac{\varepsilon_{F,X=x}~\lambda_{F,X=x}~\pi_{F,X=x}~\varepsilon_{N,X=0}}{\varepsilon_{F,X=0}~\lambda_{F,X=0}~\pi_{F,X=0}~\varepsilon_{N,X=x}} \\
+&= 1 - \frac{\varepsilon_{F,X=x}~\varepsilon_{N,X=0}}{\varepsilon_{F,X=0}~\varepsilon_{N,X=x}}\theta \\
 \end{align*}
 $$
 
@@ -454,9 +456,9 @@ Thus, we have $\varepsilon (t)$ and $D(x, t)$. Suppose that individuals are obse
 
 $$
 \begin{align*}
-\mathrm{Protection(X=x)} &= 1 - \frac{C_{F,X=x}C_{N,X=0}}{C_{F,X=0}C_{N,X=x}} \\
-&= 1 - \frac{\int_{t1}^{t2}\varepsilon_{F,X=x}(t)D(x,t) dt\ \lambda_{F,X=x}\pi_{F,X=x}\mu_{X=x}\int_{t1}^{t2}\varepsilon_{N,X=0}(t)D(0,t) dt\ \lambda_{N,X=0}\pi_{N,X=0}\mu_{X=0}}{\int_{t1}^{t2}\varepsilon_{F,X=0}(t)D(0,t) dt\ \lambda_{F,X=0}\pi_{F,X=0}\mu_{X=0}\int_{t1}^{t2}\varepsilon_{N,X=x}(t)D(x,t) dt\ \lambda_{N,X=x}\pi_{N,X=x}\mu_{X=x}} \\
-&= 1 - \frac{\int_{t1}^{t2}\varepsilon_{F,X=x}(t)D(x,t) dt\ \int_{t1}^{t2}\varepsilon_{N,X=0}(t)D(0,t) dt\ }{\int_{t1}^{t2}\varepsilon_{F,X=0}(t)D(0,t) dt\ \int_{t1}^{t2}\varepsilon_{N,X=x}(t)D(x,t) dt\ }\theta \\
+\mathrm{Protection(X=x)} &= 1 - \frac{C_{F,X=x}~C_{N,X=0}}{C_{F,X=0}~C_{N,X=x}} \\
+&= 1 - \frac{(\int_{t1}^{t2}\varepsilon_{F,X=x}(t)~D(x,t) ~dt)\ ~\lambda_{F,X=x}~\pi_{F,X=x}~\mu_{X=x}~(\int_{t1}^{t2}\varepsilon_{N,X=0}(t)~D(0,t) ~dt)\ ~\lambda_{N,X=0}~\pi_{N,X=0}~\mu_{X=0}}{(\int_{t1}^{t2}\varepsilon_{F,X=0}(t)~D(0,t) ~dt)\ ~\lambda_{F,X=0}~\pi_{F,X=0}~\mu_{X=0}~(\int_{t1}^{t2}\varepsilon_{N,X=x}(t)~D(x,t) ~dt)\ ~\lambda_{N,X=x}~\pi_{N,X=x}~\mu_{X=x}} \\
+&= 1 - \frac{(\int_{t1}^{t2}\varepsilon_{F,X=x}(t)~D(x,t) ~dt)\ ~(\int_{t1}^{t2}\varepsilon_{N,X=0}(t)~D(0,t) ~dt)\ }{(\int_{t1}^{t2}\varepsilon_{F,X=0}(t)~D(0,t) ~dt)\ ~(\int_{t1}^{t2}\varepsilon_{N,X=x}(t)~D(x,t) ~dt)\ }\theta \\
 \end{align*}
 $$
 
