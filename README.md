@@ -7,7 +7,7 @@ Introduction to the mathematics of test-negative design (TND) and an interactive
 ## Getting started
 
 - Install the `tnd` package using poetry
-- Run the app with `make`
+- Run the app with `uv run make`
 
 ## Project Admin
 
