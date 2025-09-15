@@ -216,12 +216,21 @@ $$
 \cdot \frac{\sum_i P[T|S_i,V'] P[S_i^-]}{\sum_i P[T|S_i,V] P[S^-_i]}
 $$
 
-which does not, in general, simplify to anything. We need to further assume that there are only two states, symptomatic ($S_1^+$ or $S_1^-$) or not ($S_0^+$ or $S_0^-$), with the further assumption that no symptoms means no test $P[T|S_0,V] = 0$. Then:
+which does not, in general, simplify to anything.
+
+**TO DO: Show how removing test-negative assumption gets to cross-vaccine protection.**
+
+Simplify to four symptom types:
+
+1. those that no one tests for,
+2. those that only the vaccinated test for,
+3. those that only the unvaccinated test for, and
+4. those that everyone tests for.
+
+Then we get:
 
 $$
-\frac{P[T|S_1,V] P[S^+_1|V]}{P[T|S_1,V'] P[S^+_1|V']}
-\cdot \frac{P[T|S_1,V'] P[S_1^-]}{P[T|S_1,V] P[S^-_1]}
-= \frac{P[S_1^+|V]}{P[S_1^+|V']}
+\frac{P[S_1^+|V] + P[S_3^+|V]}{P[S_2^+|V'] + P[S_3^+|V']} \cdot \frac{P[S_2^-] + P[S_3^-]}{P[S_1^-] + P[S_3^-]}
 $$
 
-which is the relevant VE risk ratio.
+In general, this doesn't work.
