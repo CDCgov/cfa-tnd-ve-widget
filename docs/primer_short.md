@@ -118,6 +118,7 @@ We consider each counted population in turn. $C_{VI}$ are the individuals who ar
 $$
 \begin{align*}
 C_{VI} &\propto P[T, I, V] \\
+&= P[T, I, E, V] + P[T, I, E', V] \\
 &= P[T, I, E, V] \quad \text{since } I \subset E\\
 &= P[T, I | V, E] P[E | V] P[V]
 \end{align*}
@@ -153,3 +154,25 @@ The first fraction is the what we want to estimate: the protection due to vaccin
 The second fraction represents symptom severity and testing behavior among the uninfected. For an unbiased estimate, the same proportion of uninfected vaccinated and of uninfected unvaccinated must seek a test. If the vaccinated are more likely to seek and receive a test (i.e., $P[T|I',V]>P[T|I',V']$), then the TND underestimates VE.
 
 The last fraction represents the intertwined biases. If vaccination does not protect against infection (i.e., $P[I' | E, V] = P[I' | E, V]$) and the vaccinated and unvaccinated are equally likely to be exposed ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$), then TND can be unbiased. If both vaccination protects against infection (i.e., $P[I' | E, V] > P[I' | E, V]$) and also the vaccinated are _less_ likely to be exposed ($\mathcal{O}[E'|V] > \mathcal{O}[E'|V']$) then TND underestimates VE. However, in the case of equal exposure rates ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$), and in the limit of rare disease ($\mathcal{O}[E' | V'] \gg P[I' | E, V']$), then this fraction also approaches unity.
+
+## Stratifying by symptoms
+
+Naive derivations of the TND assume that individuals can have symptoms or not, i.e., there is a dichotomous "symptomatic" status. One can then derive statements like: "if non-infection symptoms arise with equal probability regardless of vaccination status, but we allow the vaccinated and unvaccinated can seek tests for symptoms at different rates, then that test-seeking rate need not be equal for an unbiased estimate."
+
+These kinds of arguments confound "symptoms" and test-seeking behavior. Because we never observe what happens when a person with vaccinated-like test-seeking behavior has the kinds of symptoms that arise among the unvaccinated infected, it's unclear what is means to assume a single category of "symptoms."
+
+Instead, allow there to be a set of symptom states $\{ S_i \}$. This set can be very large; it need not just be "cough" or "102 F fever" but could instead include, say, a whole universe of types of coughs.
+
+In practice, receiving a test will be predicated on some set of symptoms, since only people with certain symptoms may be eligible to receive a test or to be included in the study. We need not be concerned with that; we can consider probabilities like $P[T | S_i, V]$ to include both the probability that a vaccinated person with symptoms $S_i$ will seek a test and also that they will qualify to receive a test.
+
+The derivation is similar to the one above, only now we stratify based on exposure and symptoms:
+
+$$
+C_{VI} \propto P[T, I, V] = \sum_i P[T, I, S_i, V]
+$$
+
+We assert that the probability of testing depends only on symptoms and vaccination, that is, that testing and infection status are conditionally independent given symptoms:
+
+$$
+P[T | I, S_i, V] = P[T | S_i, V] \text{ or, equivalent } P[T, I | S_i, V] = P[T | S_i, V] P[I | S_i, V]
+$$
