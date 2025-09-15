@@ -130,72 +130,98 @@ Naive derivations of the TND assume that individuals can have symptoms or not, i
 
 These kinds of arguments confound "symptoms" and test-seeking behavior. Because we never observe what happens when a person with vaccinated-like test-seeking behavior has the kinds of symptoms that arise among the unvaccinated infected, it's unclear what is means to assume a single category of "symptoms."
 
-Instead, allow there to be a set of symptom states $\{ S_i \}$. This set can be very large; it need not just be "cough" or "102 degree fever" but could instead include, say, a whole universe of types of coughs.
+Instead, allow there to be a set of disjoint symptom states $\{ S_i \}$. This set can be very large; it need not just be "cough" or "102 degree fever" but could instead include, say, a whole universe of types of coughs.
 
 In practice, receiving a test will be predicated on some set of symptoms, since only people with certain symptoms may be eligible to receive a test or to be included in the study. We need not be concerned with that; we can consider probabilities like $P[T | S_i, V]$ to include both the probability that a vaccinated person with symptoms $S_i$ will seek a test and also that they will qualify to receive a test.
 
-The derivation is similar to the one above, only now we stratify based on exposure and symptoms:
+Now the risk ratio of interest is:
 
 $$
-\mathbb{E}[C_{VI}] \propto P[T, I, V] = \sum_i P[T, I, S_i, V]
+\frac{P[S | E, V]}{P[S | E, V']} = \frac{\sum_i P[S_i | E, V]}{\sum_i P[S_i | E, V']}
 $$
 
-We assert that the probability of testing depends only on symptoms and vaccination, that is, that testing and infection status are conditionally independent given symptoms:
+where $S = \bigcup_i S_i$ is the event that a person has any symptoms.
+
+The derivation is similar to the one above, but more involved because we stratify based on exposure and symptoms:
 
 $$
-P[T | I, S_i, V] = P[T | S_i, V] \implies P[T, I, S_i, V] = P[T | I, S_i, V]
+\begin{aligned}
+\mathbb{E}[C_{VI}] &\propto P[T, I, V] \\
+&= \sum_i P[T, I, S_i, V] \\
+&= \sum_i P[T | I, S_i, V] P[I, S_i, V]
+\end{aligned}
+$$
+
+We now make two assertion about conditional independence. First, the probability of testing depends only on symptoms and vaccination (i.e., testing and infection status are conditionally independent given symptoms):
+
+$$
+P[T | I, S_i, V] = P[T | S_i, V]
+$$
+
+Second, that symptoms depend on infection status and not exposure (i.e., symptoms and infection are conditionally independent given exposure):
+
+$$
+P[S_i | I, E, V] = P[S_i | I, V] \implies P[S_i, I | E, V] = P[S_i | E, V] P[I | E, V]
 $$
 
 Thus:
 
 $$
 \begin{aligned}
-C_{VI} &\propto P[T, I, V] \\
-&= \sum_i P[T, I, S_i, V] \\
-&= \sum_i P[T | I, S_i, V] P[I, S_i, V] \\
-&= \sum_i P[T | S_i, V] \cdot P[S_i | I, V] \cdot P[I | E, V] \cdot P[E | V] \cdot P[V]
+\mathbb{E}[C_{VI}] &\propto \sum_i P[T | I, S_i, V] P[I, S_i, V] \\
+&= \sum_i P[T | S_i, V] P[I, S_i, E, V] \\
+&= \sum_i P[T | S_i, V] P[I, S_i | E, V] P[E, V] \\
+&= \sum_i P[T | S_i, V] P[I | E, V] P[S_i | E, V] P[E|V] P[V] \\
 \end{aligned}
 $$
 
-The derivation for the uninfected is a more straightforward replacement.
+The first probability represents testing behavior conditioned on symptoms. The second is about infection rates (and how the vaccine protects against infection). The third is the term of interest for the VE risk ratio. The last two terms are typical.
+
+For the uninfected, we need to partition into exposed and unexposed, but we don't need to do the convoluted work to get $P[S_i | E, V]$:
 
 $$
 \begin{aligned}
-C_{VI'} &\propto P[T, I', V] \\
+\mathbb{E}[C_{VI'}] &\propto P[T, I', V] \\
+&= \sum_i P[T, I', S_i, V] \\
 &= \sum_i P[T | S_i, V] P[I', S_i, V] \\
-&= \sum_i P[T | S_i, V] P[S_i | I', V] \left( P[I' | E, V] P[E|V] + P[E'|V] \right) P[V]
+&= \sum_i P[T | S_i, V] P[S_i | I', V] P[I', V] \\
+&= \sum_i P[T | S_i, V] P[S_i | I', V] \left( P[I', E, V] + P[I', E', V] \right) \\
+&= \sum_i P[T | S_i, V] P[S_i | I', V] \left( P[I'|E, V]P[E|V] + P[E'|V] \right) P[V] \\
 \end{aligned}
 $$
 
-We consider the quantity of interest in two parts:
+Some tedious algebra shows that the odds ratio is:
 
 $$
-\begin{aligned}
-\frac{C_{IV}}{C_{IV'}}
-&= \frac{
-  \sum_i P[T|S_i,V] \cdot P[S_i|I,V] \cdot P[I|E,V] \cdot P[E|V] \cdot P[V]
-}{
-  \sum_i P[T|S_i,V'] \cdot P[S_i|I,V'] \cdot P[I|E,V'] \cdot P[E|V'] \cdot P[V']
-} \\
-&= \frac{\sum_i P[T|S_i,V] P[S_i|I,V]}{\sum_i P[T|S_i,V'] P[S_i|I,V']}
+\frac{\sum_i P[T|S_i,V] P[S_i|E,V]}{\sum_i P[T|S_i,V'] P[S_i|E,V']}
 \cdot \frac{P[I|E,V]}{P[I|E,V']}
-\cdot \frac{P[E|V]}{P[E|V']}
-\cdot \frac{P[V]}{P[V']} \\
-\end{aligned}
+\cdot \frac{\sum_i P[T_i|S_i,V'] P[S_i|I',V']}{\sum_i P[T_i|S_i,V] P[S_i|I',V]}
+\cdot
+\frac{P[I'|E,V'] + \mathcal{O}[E'|V']}{P[I'|E,V] + \mathcal{O}[E'|V]}
 $$
 
-$$
-\begin{aligned}
-\frac{C_{I'V'}}{C_{I'V}}
-&= \frac{\sum_i P[T | S_i, V'] P[S_i | I', V']}{\sum_i P[T | S_i, V] P[S_i | I', V]}
-\cdot \frac{P[I' | E, V'] P[E|V'] + P[E'|V']}{P[I' | E, V] P[E|V] + P[E'|V]}
-\cdot \frac{P[V']}{P[V]}
-\end{aligned}
-$$
+**TO DO: Retry, but avoiding the collision problem; i.e., allow each person to be tested twice. But this doesn't look promising.**
+
+With the two independent test assumption, we get something like:
 
 $$
-\frac{C_{IV} C_{I'V'}}{C_{IV'} C_{I'V}}
-= \frac{}{}
-\cdot \frac{P[I|E,V]}{P[I|E,V']}
-\cdot \frac{P[I' | E, V'] + \mathcal{O}[E'|V']}{P[I' | E, V] + \mathcal{O}[E'|V]}
+\frac{\sum_i P[T^+|S^+_i,V] P[S^+_i|V]}{\sum_i P[T^+|S^+_i,V'] P[S^+_i|V']}
+\cdot \frac{\sum_i P[T^-|S^-_i,V'] P[S^-_i|V']}{\sum_i P[T^-|S^-_i,V] P[S^-_i|V]}
 $$
+
+Even if we assume that vaccination doesn't affect test-negative symptoms $P[S_i^-|V] = P[S_i^-|V'] = P[S_i^-]$, and that the testing rate does not depend on origin $P[T^+|S_i^+,V] = P[T^-|S_i^-,V] = P[T|S_i,V]$ and similarly for $V'$, then we have:
+
+$$
+\frac{\sum_i P[T|S_i,V] P[S^+_i|V]}{\sum_i P[T|S_i,V'] P[S^+_i|V']}
+\cdot \frac{\sum_i P[T|S_i,V'] P[S_i^-]}{\sum_i P[T|S_i,V] P[S^-_i]}
+$$
+
+which does not, in general, simplify to anything. We need to further assume that there are only two states, symptomatic ($S_1^+$ or $S_1^-$) or not ($S_0^+$ or $S_0^-$), with the further assumption that no symptoms means no test $P[T|S_0,V] = 0$. Then:
+
+$$
+\frac{P[T|S_1,V] P[S^+_1|V]}{P[T|S_1,V'] P[S^+_1|V']}
+\cdot \frac{P[T|S_1,V'] P[S_1^-]}{P[T|S_1,V] P[S^-_1]}
+= \frac{P[S_1^+|V]}{P[S_1^+|V']}
+$$
+
+which is the relevant VE risk ratio.
