@@ -48,31 +48,31 @@ The data available in a TND ultimately reduces to a 2x2 table of counts:
 
 We are interested in protection against symptomatic disease, conditioned on exposure:
 
-```math
+$$
 \mathrm{VE}_{SP} = 1 - \frac{P[S_I|E,V]}{P[S_I|E,U]}
-```
+$$
 
 #### Measured quantities
 
 The expected values of the numbers of tested individuals, stratified by caused of symptoms (infected $I$ or not $X$) and vaccination status, are:
 
-```math
-\begin{align*}
+$$
+\begin{aligned}
 \mathbb{E}[C_{VI}] &= n v \times P[T_I | S_I,V] \times P[S_I|E,V] \times P[E|V] \\
 \mathbb{E}[C_{VX}] &= n v \times P[T_X|S_X,V] \times P[S_X|V] \\
-\end{align*}
-```
+\end{aligned}
+$$
 
 and similarly for $U$.
 
 The actual values from the TND trial (i.e., counts of positive $P$ and negative $N$ tests) are affected by test performance:
 
-```math
-\begin{align*}
+$$
+\begin{aligned}
 \mathbb{E}[C_{VP}] &= p_\mathrm{sens} \mathbb{E}[C_{VI}] + (1 - p_\mathrm{spec}) \mathbb{E}[C_{VX}] \\
 \mathbb{E}[C_{VN}] &= (1 - p_\mathrm{sens}) \mathbb{E}[C_{VI}] + p_\mathrm{spec} \mathbb{E}[C_{VX}] \\
-\end{align*}
-```
+\end{aligned}
+$$
 
 and similarly for $U$.
 
@@ -80,9 +80,9 @@ and similarly for $U$.
 
 An estimator of the quantity of interest is:
 
-```math
+$$
 \hat{\mathrm{VE}} = 1 - \frac{C_{VP} C_{UN}}{C_{UP} C_{VN}}
-```
+$$
 
 _Proposition 1_. If the conditional probability of testing given symptoms does not depend on the cause of symptoms, but can depend on vaccination status (i.e., vaccinated people seek testing for symptoms with a single probability, regardless of the cause of the symptoms), such that $P[T_I|S_I,V] = P[T_X|S_X,V]$ and $P[T_I|S_I,U] = P[T_X|S_X,U]$, then the conditional probabilities of testing do not affect the estimator.
 
@@ -116,34 +116,35 @@ Individuals are either vaccinated $V$ or unvaccinated $V'$. At one moment, all p
 We consider each counted population in turn. $C_{VI}$ are the individuals who are vaccinated, infected, and tested:
 
 $$
-\begin{align*}
+\begin{aligned}
 C_{VI} &\propto P[T, I, V] \\
+&= P[T, I, E, V] + P[T, I, E', V] \\
 &= P[T, I, E, V] \quad \text{since } I \subset E\\
 &= P[T, I | V, E] P[E | V] P[V]
-\end{align*}
+\end{aligned}
 $$
 
 The derivation for $C_{V'I}$ is equivalent; just replace $V \to V'$.
 
-The uninfected term is more complicated, since we need to keep the partition into $E$ and $E'$:
+The uninfected term is more complicated, since we need to partition the uninfected into the exposed but infected versus the unexposed $I' = (I' \cap E) \cup E'$:
 
 $$
-\begin{align*}
+\begin{aligned}
 C_{VI'} &\propto P[T, I', V] \\
 &= P[T | I', V] P[I' | V] P[V] \\
-&= P[T | I', V] \left( P[I', E | V] + P[I', E' | V] \right) P[V] \\
-&= P[T | I', V] \left( P[I' | E, V] P[E | V] + P[E' | V] \right) P[V] \quad \text{since } E' \subset I'\\
-\end{align*}
+&= P[T | I', V] \left( P[I', E | V] + P[E' | V] \right) P[V] \\
+&= P[T | I', V] \left( P[I' | E, V] P[E | V] + P[E' | V] \right) P[V] \\
+\end{aligned}
 $$
 
 The quantity of interest is:
 
 $$
-\begin{align*}
+\begin{aligned}
 \frac{C_{VI} C_{V'I'}}{C_{V'I} C_{VI'}}
 &= \frac{P[T, I | V, E]}{P[T, I | V', E]} \cdot \frac{P[E|V]}{P[E|V']} \cdot \frac{P[T | I', V']}{P[T | I', V]} \cdot \frac{P[I' | E, V'] P[E | V'] + P[E' | V']}{P[I' | E, V] P[E | V] + P[E' | V]} \\
 &= \frac{P[T, I | V, E]}{P[T, I | V', E]} \cdot \frac{P[T | I', V']}{P[T | I', V]} \cdot \frac{P[I' | E, V'] + \mathcal{O}[E' | V']}{P[I' | E, V] + \mathcal{O}[E' | V]} \\
-\end{align*}
+\end{aligned}
 $$
 
 where $\mathcal{O}[\bullet]$ is odds.
@@ -153,3 +154,79 @@ The first fraction is the what we want to estimate: the protection due to vaccin
 The second fraction represents symptom severity and testing behavior among the uninfected. For an unbiased estimate, the same proportion of uninfected vaccinated and of uninfected unvaccinated must seek a test. If the vaccinated are more likely to seek and receive a test (i.e., $P[T|I',V]>P[T|I',V']$), then the TND underestimates VE.
 
 The last fraction represents the intertwined biases. If vaccination does not protect against infection (i.e., $P[I' | E, V] = P[I' | E, V]$) and the vaccinated and unvaccinated are equally likely to be exposed ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$), then TND can be unbiased. If both vaccination protects against infection (i.e., $P[I' | E, V] > P[I' | E, V]$) and also the vaccinated are _less_ likely to be exposed ($\mathcal{O}[E'|V] > \mathcal{O}[E'|V']$) then TND underestimates VE. However, in the case of equal exposure rates ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$), and in the limit of rare disease ($\mathcal{O}[E' | V'] \gg P[I' | E, V']$), then this fraction also approaches unity.
+
+## Stratifying by symptoms
+
+Naive derivations of the TND assume that individuals can have symptoms or not, i.e., there is a dichotomous "symptomatic" status. One can then derive statements like: "if non-infection symptoms arise with equal probability regardless of vaccination status, but we allow the vaccinated and unvaccinated can seek tests for symptoms at different rates, then that test-seeking rate need not be equal for an unbiased estimate."
+
+These kinds of arguments confound "symptoms" and test-seeking behavior. Because we never observe what happens when a person with vaccinated-like test-seeking behavior has the kinds of symptoms that arise among the unvaccinated infected, it's unclear what is means to assume a single category of "symptoms."
+
+Instead, allow there to be a set of symptom states $\{ S_i \}$. This set can be very large; it need not just be "cough" or "102 F fever" but could instead include, say, a whole universe of types of coughs.
+
+In practice, receiving a test will be predicated on some set of symptoms, since only people with certain symptoms may be eligible to receive a test or to be included in the study. We need not be concerned with that; we can consider probabilities like $P[T | S_i, V]$ to include both the probability that a vaccinated person with symptoms $S_i$ will seek a test and also that they will qualify to receive a test.
+
+The derivation is similar to the one above, only now we stratify based on exposure and symptoms:
+
+$$
+C_{VI} \propto P[T, I, V] = \sum_i P[T, I, S_i, V]
+$$
+
+We assert that the probability of testing depends only on symptoms and vaccination, that is, that testing and infection status are conditionally independent given symptoms:
+
+$$
+P[T | I, S_i, V] = P[T | S_i, V] \implies P[T, I, S_i, V] = P[T | I, S_i, V]
+$$
+
+Thus:
+
+$$
+\begin{aligned}
+C_{VI} &\propto P[T, I, V] \\
+&= \sum_i P[T, I, S_i, V] \\
+&= \sum_i P[T | I, S_i, V] P[I, S_i, V] \\
+&= \sum_i P[T | S_i, V] \cdot P[S_i | I, V] \cdot P[I | E, V] \cdot P[E | V] \cdot P[V]
+\end{aligned}
+$$
+
+The derivation for the uninfected is a more straightforward replacement.
+
+$$
+\begin{aligned}
+C_{VI'} &\propto P[T, I', V] \\
+&= \sum_i P[T | S_i, V] P[I', S_i, V] \\
+&= \sum_i P[T | S_i, V] P[S_i | I', V] \left( P[I' | E, V] P[E|V] + P[E'|V] \right) P[V]
+\end{aligned}
+$$
+
+We consider the quantity of interest in two parts:
+
+$$
+\begin{aligned}
+\frac{C_{IV}}{C_{IV'}}
+&= \frac{
+  \sum_i P[T|S_i,V] \cdot P[S_i|I,V] \cdot P[I|E,V] \cdot P[E|V] \cdot P[V]
+}{
+  \sum_i P[T|S_i,V'] \cdot P[S_i|I,V'] \cdot P[I|E,V'] \cdot P[E|V'] \cdot P[V']
+} \\
+&= \frac{\sum_i P[T|S_i,V] P[S_i|I,V]}{\sum_i P[T|S_i,V'] P[S_i|I,V']}
+\cdot \frac{P[I|E,V]}{P[I|E,V']}
+\cdot \frac{P[E|V]}{P[E|V']}
+\cdot \frac{P[V]}{P[V']} \\
+\end{aligned}
+$$
+
+$$
+\begin{aligned}
+\frac{C_{I'V'}}{C_{I'V}}
+&= \frac{\sum_i P[T | S_i, V'] P[S_i | I', V']}{\sum_i P[T | S_i, V] P[S_i | I', V]}
+\cdot \frac{P[I' | E, V'] P[E|V'] + P[E'|V']}{P[I' | E, V] P[E|V] + P[E'|V]}
+\cdot \frac{P[V']}{P[V]}
+\end{aligned}
+$$
+
+$$
+\frac{C_{IV} C_{I'V'}}{C_{IV'} C_{I'V}}
+= \frac{}{}
+\cdot \frac{P[I|E,V]}{P[I|E,V']}
+\cdot \frac{P[I' | E, V'] + \mathcal{O}[E'|V']}{P[I' | E, V] + \mathcal{O}[E'|V]}
+$$
