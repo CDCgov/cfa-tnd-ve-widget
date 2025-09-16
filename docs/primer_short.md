@@ -2,38 +2,71 @@
 
 ## Vaccine efficacy
 
-VE is the fractional reduction in the probability of an adverse outcome due to vaccination. For purposes of a test-negative design (TND) study, we further define VE to be:
+VE is the fractional reduction in the probability of an adverse outcome due to vaccination, that is $\mathrm{VE} = 1 - \mathrm{RR}$ for some risk ratio RR. For purposes of a test-negative design (TND) study, we further define VE to be:
 
 - a direct effect, that is, the counterfactual reduction in risk that would occur if a single individual were vaccinated or not, and not the population-level effect of reducing transmission via a vaccination program,
 - protection against both infection and progression to symptoms that would lead to a diagnostic test, written $\mathrm{VE}_{SP}$ in [Halloran, Longini, and Struchiner](https://doi.org/10.1007/978-0-387-68636-3),
-- conditioned on some probability or amount of exposure to disease, and
+- conditioned on (some amount of exposure) to disease, and
 - binary, that is, individuals are considered vaccinated or not (e.g., people who were vaccinated shortly before the outcome of interest may be classified as "unvaccinated" in the study, because they are presumed to have not yet been protected).
 
-## TND with independent infection and non-infection test options
+## TND with independent test-positive and test-negative condition rates
 
 In the simplest derivation, we assume that:
 
 - Test performance is perfect.
-- Each individual eligible for inclusion in the TND can be exposed. If so, they have a probability of being infected, and then another probability of being tested. If it occurs, this test will be positive.
-- Each individual has an independent probability of receiving a test for reasons other than the pathogen of interest. If it occurs, this test will be negative.
-- We make no particular assumptions about the temporal ordering of these events, although for this to be plausible, each individual must have the opportunity to appear in the TND twice, but only once each for the positive and negative test.
+- There is some population of $n_V$ vaccinated individuals and $n_U$ unvaccinated individuals that are _a priori_ eligible for inclusion in the TND.
+- Testing is a Poisson process. Each vaccinated individual receives tests for the test-positive condition at rate $\lambda^{T+}_V$ and for the test-negative condition at rate $\lambda^{T-}_V$.
+- Unvaccinated individuals receive tests at analogous rates $\lambda^{T+}_U$ and $\lambda^{T-}_U$.
+
+Note that this means that we assume there are no "collisions" between test-positive and test-negative conditions. An individual could theoretically test positive and then test negative one millisecond later.
 
 The data available are a 2x2 table of counts of test results:
 
-|              | Vaccinated | Unvaccinated |
-| ------------ | ---------- | ------------ |
-| Infected     | $C_{IV}$   | $C_{IV'}$    |
-| Not infected | $C_{I'V}$  | $C_{I'V'}$   |
+|               | Vaccinated | Unvaccinated |
+| ------------- | ---------- | ------------ |
+| Test positive | $X^+_V$    | $X^+_U$      |
+| Test negative | $X^-_V$    | $X^-_U$      |
 
-Note that we use $I'$ and $V'$ to mean not infected and not vaccinated.
-
-In general, we are interested in the protection provided by vaccines against symptomatic disease, in the presence of infection, conditioned on exposure. Because TNDs measure symptoms only via participants' seeking, qualifying for, and receiving a test, we define VE as:
+We are interested in the protection provided by the vaccine. In this model, where there are only test-positive and -negative conditions, we are interested in the risk ratio:
 
 $$
-\mathrm{VE}_{SP} = 1 - \frac{P[T_I|E,V]}{P[T_I|E,V']}
+\mathrm{RR} = \frac{\lambda^{T+}_V}{\lambda^{T+}_U}
 $$
+
+Consider the odds ratio as an estimator for the risk ratio:
+
+$$
+\hat{\mathrm{RR}} = \frac{X^+_V X^-_U}{X^-_V X^+_U}
+$$
+
+Because the counts of tests from each person is an i.i.d.Poisson distribution, the total counts of tests are themselves Poisson distributed:
+
+$$
+X^+_V \sim \mathrm{Poisson}(n_V \lambda^{T+}_V D)
+$$
+
+where $D$ is the duration of the trial. These variables are all independent, so
+
+$$
+\mathbb{E}\left[\hat{\mathrm{RR}}\right] = \mathbb{E}[X_V^+] \cdot \mathbb{E}\left[ \frac{1}{X_V^-} \right] \cdot \mathbb{E}[X_U^-] \cdot \mathbb{E}\left[ \frac{1}{X_U^+} \right]
+$$
+
+If $X \sim \mathrm{Poisson}(\lambda)$, then $\mathbb{E}[X] = \lambda$. It is generally not the case that $\mathbb{E}[1/X] = 1/\lambda$ (consider, e.g., $X=0$), but $\lim_{\lambda \to \infty} E[1/X | X > 0] = 1/\lambda$. Therefore, so long as all rates are nonzero:
+
+$$
+\begin{aligned}
+\lim_{n_V, n_U \to \infty} \mathbb{E}\left[\hat{\mathrm{RR}}\right]
+&= \frac{\mathbb{E}[X_V^+] \mathbb{E}[X_U^-]}{\mathbb{E}[X_V^-] \mathbb{E}[X_U^+]} \\
+&= \frac{n_V \lambda^{T+}_V D \cdot n_U \lambda^{T-}_U D}{ n_U \lambda^{T-}_V D \cdot n_V \lambda^{T+}_U D} \\
+&= \mathrm{RR} \cdot \frac{\lambda^{T-}_U}{\lambda^{T-}_V}
+\end{aligned}
+$$
+
+Thus, so long as the vaccinated and unvaccinated are tested for test-negative conditions at the same rate, then the TND odds ratio is an unbiased estimator of the relevant VE risk ratio (subject also the requirement that rates be nonzero and in the limit of large populations).
 
 where $T_I$ is the event that a person is tested, in the presence of infection, and the test was "for" the infection (i.e., it wasn't the person's second, non-infection test).
+
+**TO DO: Rewrite VE=1-RR, and then talk about the OR as an estimator of the OR, in the limit of N->infty.**
 
 We consider the estimator:
 
