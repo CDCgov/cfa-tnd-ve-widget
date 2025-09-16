@@ -83,10 +83,10 @@ Thus, so long as the vaccinated and unvaccinated are tested for test-negative co
 Replace the test-positive exposure rate $\lambda^{T+}_V$ with the exposure rate $\lambda^E_V$, the probability of infection given exposure $P[I|E,V]$ and the probability of testing given infection:
 
 $$
-\lambda^{T+}_V = \lambda^E_V \cdot P[I|E,V] \cdot P[T|I,V] = \lambda_V^E \cdot P[T,I|E,V]
+\lambda^{T+}_V = \lambda_V^E \cdot P[T,I|E,V]
 $$
 
-(To check this result, treat exposure as a single event $\lambda_V^E \to P[E|V]$ and replace $\lambda_V^{T+} \to P[T,I|V]$.)
+(To check this result, treat exposure and testing as one-time possibilities, replacing $\lambda_V^E \to P[E|V]$ and $\lambda_V^{T+} \to P[T,I|V]$.)
 
 In this case, the ORE is:
 
@@ -98,164 +98,161 @@ Thus, if the vaccinated and unvaccinated have equal exposure rates, then the TND
 
 ## Conditioning on symptoms
 
-It is commonly held that TNDs mitigate biases due to differences in testing behavior between the vaccinated and unvaccinated.
+**Proposition: TND does not account for testing behavior.**
 
-Naive derivations of the TND assume that individuals can have symptoms or not, i.e., there is a dichotomous "symptomatic" status. One can then derive statements like: "if non-infection symptoms arise with equal probability regardless of vaccination status, but we allow the vaccinated and unvaccinated can seek tests for symptoms at different rates, then that test-seeking rate need not be equal for an unbiased estimate."
+It is commonly held that TNDs mitigate biases due to differences in testing behavior between the vaccinated and unvaccinated. This cannot be generally true: if symptoms information is not part of the analysis, then for the purposes of analysis, testing behavior and disease progression are perfectly confounded. We cannot distinguish how the vaccine reduces symptoms versus how the vaccinated and unvaccinated seek rates at different rates for different symptoms.
 
-These kinds of arguments confound "symptoms" and test-seeking behavior. Because we never observe what happens when a person with vaccinated-like test-seeking behavior has the kinds of symptoms that arise among the unvaccinated infected, it's unclear what is means to assume a single category of "symptoms."
+Here we show a general treatment, a specific counterexample, and then follow the derivation that can be erroneously interpreted as proof that TND accounts for testing behavior.
 
-Instead, allow there to be a set of disjoint symptom states $\{ S_i \}$. This set can be very large; it need not just be "cough" or "102 degree fever" but could instead include, say, a whole universe of types of coughs.
+### General derivation
 
-In practice, receiving a test will be predicated on some set of symptoms, since only people with certain symptoms may be eligible to receive a test or to be included in the study. We need not be concerned with that; we can consider probabilities like $P[T | S_i, V]$ to include both the probability that a vaccinated person with symptoms $S_i$ will seek a test and also that they will qualify to receive a test.
+Consider a set of disjoint symptom statuses $\{ S_i \}$. This set can be very large; it is not just "cough" and "cough and 102 degree fever" but instead includes a whole universe of types of coughs, fevers, chills, etc.
 
-Now the risk ratio of interest is:
+These symptoms will determine the probability that a person seeks a test and the probability that, having sought a test, they will receive it (since, in practice, the TND will have some inclusion/exclusion criteria related to symptoms). We do not separately observe test-seeking and test-receiving, so we consider probabilities like $P[T | S_i, V]$ that encapsulate both processes.
 
-$$
-\frac{P[S | E, V]}{P[S | E, V']} = \frac{\sum_i P[S_i | E, V]}{\sum_i P[S_i | E, V']}
-$$
-
-where $S = \bigcup_i S_i$ is the event that a person has any symptoms.
-
-The derivation is similar to the one above, but more involved because we stratify based on exposure and symptoms:
+Now the positive test rate is:
 
 $$
 \begin{aligned}
-\mathbb{E}[C_{VI}] &\propto P[T, I, V] \\
-&= \sum_i P[T, I, S_i, V] \\
-&= \sum_i P[T | I, S_i, V] P[I, S_i, V]
+\lambda^{T+}_V &= P[T,I|E,V] \cdot \lambda^E_V \\
+&= \sum_i P[T,S_i,I|E,V] \cdot \lambda^E_V \\
+&= \sum_i P[T|S_i,I,E,V] P[S_i,I|E,V] \cdot \lambda^E_V
 \end{aligned}
 $$
 
-We now make two assertion about conditional independence. First, the probability of testing depends only on symptoms and vaccination (i.e., testing and infection status are conditionally independent given symptoms):
+Note that $E \cap I = I$, so that $P[T|S_i,I,E,V] = P[T|S_i,I,V]$. Assume that the probability of testing depends only on symptoms and vaccination (i.e., testing and infection status are conditionally independent given symptoms) so that $P[T|S_i,I,V] = P[T|S_i,V]$. Similarly, $P[S_i,I|E,V] = P[S_i|I,V] P[I|E,V]$. Thus:
 
 $$
-P[T | I, S_i, V] = P[T | S_i, V]
+\lambda^{T+}_V = \sum_i P[T|S_i,V] \cdot P[S_i|I,V] \cdot P[I|E,V] \cdot \lambda^E_V
 $$
 
-Second, that symptoms depend on infection status and not exposure (i.e., symptoms and infection are conditionally independent given exposure):
+We similarly stratify the test-negative rate by symptom statuses:
 
 $$
-P[S_i | I, E, V] = P[S_i | I, V] \implies P[S_i, I | E, V] = P[S_i | E, V] P[I | E, V]
+\lambda^{T-}_V = \sum_i P[T|S_i,V] \lambda^{S_i-}_V
 $$
 
-Thus:
+where $\lambda^{S_i-}_V$ is the rate at which symptom status $i$ arises due to test-negative conditions among the vaccinated.
+
+Thus, the ORE is:
+
+$$
+\frac{\sum_i P[T|S_i,V] P[S_i|I,V]}{\sum_i P[T|S_i,U] P[S_i|I,U]}
+\cdot \frac{P[I|E,V]}{P[I|E,U]}
+\cdot \frac{\lambda^E_V}{\lambda^E_U}
+\cdot \frac{\sum_i P[T|S_i,U] \lambda^{S_i-}_U}{\sum_i P[T|S_i,V] \lambda^{S_i-}_V}
+$$
+
+The first fraction is relative risk of a seeking and receiving a positive test, given infection, in the vaccinated relative to the unvaccinated. The second fraction is the relative risk of infection given exposure. The third fraction is the relative rate of exposure. The fourth fraction is the relative risk of seeking and receiving a negative test.
+
+This ORE does not reduce, even under some simplifying assumptions. For example, even if:
+
+- both groups are exposed at the same rate $\lambda^E_V = \lambda^E_U$,
+- the probability of testing depends on symptoms and not vaccination status $P[T|S_i,V]=P[T|S_i|U]=P[T|S_i]$, and
+- the test-negative conditions arise at the same rate $\lambda_V^{S_i-} = \lambda_U^{S_i-}$,
+
+then the third and fourth fractions cancel, and the ORE reduces to
+
+$$
+\frac{\sum_i P[T|S_i] P[S_i|I,V]}{\sum_i P[T|S_i] P[S_i|I,U]}
+\cdot \frac{P[I|E,V]}{P[I|E,U]}
+$$
+
+We could further assume that the vaccine has no effect on symptoms, so that $P[S_i|I,V] = P[S_i|I,U]$, in which case the TND estimates $\mathrm{VE}_S$ via the risk ratio $P[I|E,V]/P[I|E,U]$, but this is counterproductive, since we are in fact trying to understand the role of symptoms in testing.
+
+### Dichotomous symptoms
+
+To see where the erroneous conclusion can come from, assume that individuals are symptomatic $S_1$ or not $S_0$, and the asymptomatic do not seek tests so that $P[T|S_0,V]=P[T|S_0,U]=0$. Then the ORE reduces to:
+
+$$
+\frac{P[T|S_1,V] P[S_1|I,V]}{P[T|S_1,U] P[S_1|I,U]}
+\cdot \frac{P[I|E,V]}{P[I|E,U]}
+\cdot \frac{\lambda^E_V}{\lambda^E_U}
+\cdot \frac{P[T|S_1,U] \lambda^{S_1-}_U}{P[T|S_1,V] \lambda^{S_1-}_V}
+=
+\frac{P[S_1|I,V]}{P[S_1|I,U]}
+\cdot \frac{P[I|E,V]}{P[I|E,U]}
+\cdot \frac{\lambda^E_V}{\lambda^E_U}
+\cdot \frac{\lambda^{S_1-}_U}{\lambda^{S_1-}_V}
+$$
+
+in which case TND can deliver an unbiased estimate for $\mathrm{VE}_{SP}$.
+
+In general, one cannot conclude that there is simply "symptomic" or "not."
+
+### Counterexample
+
+To see why TND cannot generally correct for test-seeking behavior, consider a simple case where there are 3 types of symptoms:
+
+- 0: Neither the vaccinated not unvaccinated seek a test, so that $P[T|S_0,V]=P[T|S_0,U]=0$
+- 1: Everyone seeks a test, with equal probability $P[T|S_1]$.
+- 2: The vaccinated seek a test; the unvaccinated do not.
 
 $$
 \begin{aligned}
-\mathbb{E}[C_{VI}] &\propto \sum_i P[T | I, S_i, V] P[I, S_i, V] \\
-&= \sum_i P[T | S_i, V] P[I, S_i, E, V] \\
-&= \sum_i P[T | S_i, V] P[I, S_i | E, V] P[E, V] \\
-&= \sum_i P[T | S_i, V] P[I | E, V] P[S_i | E, V] P[E|V] P[V] \\
+&\quad \frac{P[T|S_1] P[S_1|I] + P[T|S_2,V]P[S_2|I,V]}{P[T|S_1] P[S_1|I,U]}
+\cdot \frac{P[I|E,V]}{P[I|E,U]}
+\cdot \frac{\lambda^E_V}{\lambda^E_U}
+\cdot \frac{P[T|S_1] \lambda^{S_1-}_U}{P[T|S_1] \lambda^{S_1-}_V + P[T|S_2,V] \lambda^{S_2-}_V} \\
+&= \left(1 + \frac{P[T|S_2,V]P[S_2|I,V]}{P[T|S_1] P[S_1|I,U]} \right)
+\cdot \frac{P[I|E,V]}{P[I|E,U]}
+\cdot \frac{\lambda^E_V}{\lambda^E_U}
+\cdot \left(1 + \frac{P[T|S_2,V] \lambda^{S_2-}_V}{P[T|S_1] \lambda^{S_1-}_U} \right)^{-1} \\
 \end{aligned}
 $$
 
-The first probability represents testing behavior conditioned on symptoms. The second is about infection rates (and how the vaccine protects against infection). The third is the term of interest for the VE risk ratio. The last two terms are typical.
+To achieve an unbiased estimate, we must assume that $S_2$ is never tested for or never arises, that is, that we return to the single symptom status assumption.
 
-For the uninfected, we need to partition into exposed and unexposed, but we don't need to do the convoluted work to get $P[S_i | E, V]$:
+## Rare disease assumption
+
+**Proposition: TND requires a rare disease assumption, but not because of its odds ratio.**
+
+Because the TND uses an odds ratio to estimate a risk ratio, it is commonly believed that TND requires the rare disease assumption, since the TND is a kind of case-control study.
+
+It is in general not true that interpreting case-control studies requires a rare disease assumption. Only certain case-control designs (the "cumulative" or "epidemic" design) need this assumption. The TND is not one of them.
+
+Confusingly, however, the TND does require a rare disease assumption, but not because of the odds ratio, but because of sort of immortal time bias. After a person is infected, they cannot test negative for some time, even if the reason they pursued testing was because of a test-negative condition. Therefore, vaccination, by reducing the probability of infection, actually increases the probability of the test-negative condition, creating a second-order bias.
+
+To demonstrate this bias, consider a simplified situation, in which everyone in the trial has the single opportunity to be exposed. The exposed then have a probability of being infected. After this, everyone has a probability of being tested. In this case, the ORE is:
+
+$$
+\frac{P[T,I|V] P[T,I'|U]}{P[T,I'|V] P[T,I|U]}
+$$
+
+where $I'$ means uninfected, and we are estimating the risk ratio:
+
+$$
+\frac{P[T,I|E,V]}{P[T,I|E,U]}
+$$
+
+The test positive terms are:
 
 $$
 \begin{aligned}
-\mathbb{E}[C_{VI'}] &\propto P[T, I', V] \\
-&= \sum_i P[T, I', S_i, V] \\
-&= \sum_i P[T | S_i, V] P[I', S_i, V] \\
-&= \sum_i P[T | S_i, V] P[S_i | I', V] P[I', V] \\
-&= \sum_i P[T | S_i, V] P[S_i | I', V] \left( P[I', E, V] + P[I', E', V] \right) \\
-&= \sum_i P[T | S_i, V] P[S_i | I', V] \left( P[I'|E, V]P[E|V] + P[E'|V] \right) P[V] \\
+P[T,I|V] &= P[T,I,E|V] \quad \text{since } I \subset E\\
+&= P[T,I|E,V] P[E|V]
 \end{aligned}
 $$
 
-Some tedious algebra shows that the odds ratio is:
-
-$$
-\frac{\sum_i P[T|S_i,V] P[S_i|E,V]}{\sum_i P[T|S_i,V'] P[S_i|E,V']}
-\cdot \frac{P[I|E,V]}{P[I|E,V']}
-\cdot \frac{\sum_i P[T_i|S_i,V'] P[S_i|I',V']}{\sum_i P[T_i|S_i,V] P[S_i|I',V]}
-\cdot
-\frac{P[I'|E,V'] + \mathcal{O}[E'|V']}{P[I'|E,V] + \mathcal{O}[E'|V]}
-$$
-
-**TO DO: Retry, but avoiding the collision problem; i.e., allow each person to be tested twice. But this doesn't look promising.**
-
-With the two independent test assumption, we get something like:
-
-$$
-\frac{\sum_i P[T^+|S^+_i,V] P[S^+_i|V]}{\sum_i P[T^+|S^+_i,V'] P[S^+_i|V']}
-\cdot \frac{\sum_i P[T^-|S^-_i,V'] P[S^-_i|V']}{\sum_i P[T^-|S^-_i,V] P[S^-_i|V]}
-$$
-
-Even if we assume that vaccination doesn't affect test-negative symptoms $P[S_i^-|V] = P[S_i^-|V'] = P[S_i^-]$, and that the testing rate does not depend on origin $P[T^+|S_i^+,V] = P[T^-|S_i^-,V] = P[T|S_i,V]$ and similarly for $V'$, then we have:
-
-$$
-\frac{\sum_i P[T|S_i,V] P[S^+_i|V]}{\sum_i P[T|S_i,V'] P[S^+_i|V']}
-\cdot \frac{\sum_i P[T|S_i,V'] P[S_i^-]}{\sum_i P[T|S_i,V] P[S^-_i]}
-$$
-
-which does not, in general, simplify to anything.
-
-**TO DO: Show how removing test-negative assumption gets to cross-vaccine protection.**
-
-Simplify to four symptom types:
-
-1. those that no one tests for,
-2. those that only the vaccinated test for,
-3. those that only the unvaccinated test for, and
-4. those that everyone tests for.
-
-Then we get:
-
-$$
-\frac{P[S_1^+|V] + P[S_3^+|V]}{P[S_2^+|V'] + P[S_3^+|V']} \cdot \frac{P[S_2^-] + P[S_3^-]}{P[S_1^-] + P[S_3^-]}
-$$
-
-In general, this doesn't work.
-
-## Single-exposure, no-repeat requires rare disease limit to be unbiased
-
-The assumption about the two, unrelated tests was awkward. The assumption that the second test would always be negative was even worse. Instead, assume that each individual is one of unexposed, exposed and uninfected, or infected, and can become tested $T$, but each individual can be tested only once. Assume perfect test sensitivity.
-
-Now we define the relevant risk ratio as:
-
-$$
-\frac{P[T, I | E, V]}{P[T, I | E, V']}
-$$
-
-Thus:
+The test negative terms are more complicated, since we need to partition the uninfected into the exposed but infected versus the unexposed $I' = (I' \cap E) \cup E'$:
 
 $$
 \begin{aligned}
-\mathbb{E}[C_{VI}] &\propto P[T, I, V] \\
-&= P[T, I, E, V] \quad \text{since } I \subset E\\
-&= P[T, I | V, E] P[E | V] P[V]
+P[T,I'|V] &= P[T|I',V] P[I'|V] \\
+&= P[T|I',V] \cdot \Big( P[I',E|V] + P[E'|V] \Big) \\
+&= P[T|I',V] \cdot \Big( P[I'|E,V] P[E|V] + P[E'|V] \Big) \\
 \end{aligned}
 $$
 
-The uninfected term is more complicated, since we need to partition the uninfected into the exposed but infected versus the unexposed $I' = (I' \cap E) \cup E'$:
+The ORE is:
 
 $$
 \begin{aligned}
-C_{VI'} &\propto P[T, I', V] \\
-&= P[T | I', V] P[I' | V] P[V] \\
-&= P[T | I', V] \left( P[I', E | V] + P[E' | V] \right) P[V] \\
-&= P[T | I', V] \left( P[I' | E, V] P[E | V] + P[E' | V] \right) P[V] \\
-\end{aligned}
-$$
-
-The quantity of interest is:
-
-$$
-\begin{aligned}
-\frac{\mathbb{E}[C_{IV}] \mathbb{E}[C_{I'V'}]}{\mathbb{E}[C_{IV'}] \mathbb{E}[C_{I'V}]}
-&= \frac{P[T, I | V, E]}{P[T, I | V', E]} \cdot \frac{P[E|V]}{P[E|V']} \cdot \frac{P[T | I', V']}{P[T | I', V]} \cdot \frac{P[I' | E, V'] P[E | V'] + P[E' | V']}{P[I' | E, V] P[E | V] + P[E' | V]} \\
-&= \frac{P[T, I | V, E]}{P[T, I | V', E]} \cdot \frac{P[T | I', V']}{P[T | I', V]} \cdot \frac{P[I' | E, V'] + \mathcal{O}[E' | V']}{P[I' | E, V] + \mathcal{O}[E' | V]} \\
+&\quad \frac{P[T, I | V, E]}{P[T, I | U, E]} \cdot \frac{P[E|V]}{P[E|U]} \cdot \frac{P[T | I', U]}{P[T | I', V]} \cdot \frac{P[I' | E, U] P[E | U] + P[E' | U]}{P[I' | E, V] P[E | V] + P[E' | V]} \\
+&= \frac{P[T, I | V, E]}{P[T, I | U, E]} \cdot \frac{P[T | I', U]}{P[T | I', V]} \cdot \frac{P[I' | E, U] + \mathcal{O}[E' | U]}{P[I' | E, V] + \mathcal{O}[E' | V]} \\
 \end{aligned}
 $$
 
 where $\mathcal{O}[\bullet]$ is odds.
 
-The first fraction is the desired risk ratio.
-
-The second fraction represents testing rates among the uninfected. For an unbiased estimate, the same proportion of uninfected vaccinated and of uninfected unvaccinated must be tested. If the vaccinated are more likely to be tested (i.e., $P[T|I',V]>P[T|I',V']$), for example, because they are more likely to seek and receive a test, then the TND underestimates VE.
-
-The last fraction represents two intertwined biases. If vaccination does not protect against infection (i.e., $P[I' | E, V] = P[I' | E, V]$) _and_ the vaccinated and unvaccinated are equally likely to be exposed ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$), then TND can be unbiased. If both vaccination protects against infection (i.e., $P[I' | E, V] > P[I' | E, V]$) and also the vaccinated are _less_ likely to be exposed ($\mathcal{O}[E'|V] > \mathcal{O}[E'|V']$) then TND underestimates VE.
-
-However, in the case of equal exposure rates ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$), and in the limit of rare disease ($\mathcal{O}[E' | V'] \gg P[I' | E, V']$), then the third fraction also approaches unity. This approaches the situation above, where receiving a non-infection test is essentially independent of receiving a for-infection test.
+The first fraction is the desired risk ratio. The second fraction represents test-negative rates. The last fraction shows that TND can be unbiased in two cases. Both require that the vaccinated and unvaccinated are equally likely to be exposed ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$). First, if exposure is rare ($\mathcal{O}[E' | V'] \gg 1$), then the third fraction approaches unity. Second, and less plausible, if vaccination does not protect against infection (i.e., $P[I' | E, V] = P[I' | E, V]$), then the vaccinated are not at greater risk for the test-negative condition anyway.
