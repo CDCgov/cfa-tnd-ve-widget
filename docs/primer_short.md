@@ -308,3 +308,16 @@ $$
 is the same for all $i$.
 
 Then logistic regression with multiple predictors again delivers the quantity of interest.
+
+### Example: Correlated vaccinations
+
+When measuring VE for one vaccine (e.g., COVID-19) using a TND, if vaccination status for another vaccine (e.g., flu) is not stratified for in the analysis (i.e., as a predictor in the logistic regression), then the VE estimate will be biased downward.
+
+As a concrete example, assume:
+
+- 25% of people take both vaccine 1 and vaccine 2, and the remaining 75% of people take neither.
+- 25% of pathogen 1-like symptoms are in fact caused by pathogen 2 and that vaccine 2 prevents pathogen 2 symptoms with 50% VE.
+- In the absence of vaccine 2, the unvaccinated and those vaccinated with vaccine 1 would have the same test-negative rate.
+- The true VE for vaccine 1 is 25% (i.e., its risk ratio is $\tfrac{3}{4}$).
+
+We naively use TND to estimate VE for vaccine 1, without accounting for vaccine 2. Among those vaccinated with vaccine 1, vaccine 2 reduces the test-negative rate by $\tfrac{1}{4}\cdot\tfrac{1}{2} = \tfrac{1}{8} = 12.5\%$. This increases the ORE by $1 - \tfrac{1}{1/8} = \tfrac{8}{7}$, from $\tfrac{3}{4}$ to $\tfrac{6}{7}$. Then the estimate VE is $1-\tfrac{6}{7} \approx 14\%$, which is a substantial underestimate.
