@@ -256,3 +256,68 @@ $$
 where $\mathcal{O}[\bullet]$ is odds.
 
 The first fraction is the desired risk ratio. The second fraction represents test-negative rates. The last fraction shows that TND can be unbiased in two cases. Both require that the vaccinated and unvaccinated are equally likely to be exposed ($\mathcal{O}[E'|V] = \mathcal{O}[E'|V']$). First, if exposure is rare ($\mathcal{O}[E' | V'] \gg 1$), then the third fraction approaches unity. Second, and less plausible, if vaccination does not protect against infection (i.e., $P[I' | E, V] = P[I' | E, V]$), then the vaccinated are not at greater risk for the test-negative condition anyway.
+
+## Logistic regression
+
+### Simple case
+
+In the simplest case, a logistic regression for TND has one predictor (vaccinated or not) and one outcome (positive or negative test result). It estimates the risk ratio of a positive test, given that a test occurred:
+
+$$
+\frac{P[I|T,V]}{P[I'|T,V]} = \exp\{\boldsymbol{\beta}_V \cdot \mathbf{X}\}
+$$
+
+where $\boldsymbol{\beta}_V = [1, 1]$, $X_0$ relates to the risk of a positive test in the absence of vaccination, and $X_0$ relates to the change in risk of a positive test due to vaccination. Similarly:
+
+$$
+\frac{P[I|T,U]}{P[I'|T,U]} = \exp\{\boldsymbol{\beta}_U \cdot \mathbf{X}\}
+$$
+
+where $\boldsymbol{\beta}_V = [1, 0]$.
+
+Note that $P[I|T,V]/P[I'|T,V] = P[T,I|V]/P[T,I'|V]$, so we can relate the probability of a positive test conditioned on there being a test to the probability of a positive test not conditioned on testing. Thus:
+
+$$
+\begin{aligned}
+\mathrm{ORE} &=
+\frac{P[T,I|V]}{P[T|I',V]} \frac{P[T,I'|U]}{P[T|I|U]} \\
+&= \frac{P[I|T,V]}{P[I'|T,V]} \left( \frac{P[I|T,U]}{P[I'|T,U]} \right)^{-1} \\
+&= \exp\{ (\boldsymbol{\beta}_V - \boldsymbol{\beta}_U) \cdot \mathbf{X} \} \\
+&= \exp\{ X_1 \}
+\end{aligned}
+$$
+
+In other words, an exponentiated coefficient from the regression is the ORE, which predicts the VE risk ratio of interest.
+
+### Multiple predictors
+
+If there are multiple subpopulations $B_i$ that each have different risks of a positive test in the absence of vaccination and also have different vaccination rates. Then the traditional ORE has terms like:
+
+$$
+\frac{P[T,I|V]}{P[T,I'|V]} = \frac{\sum_i P[T,I|V,B_i] P[V|B_i] P[B_i]}{\sum_i P[T,I'|V,B_i] P[V|B_i] P[B_i]}
+$$
+
+which are not useful to us.
+
+Instead, we assume that vaccination has the same relative effect in each population, so that
+
+$$
+\frac{P[T,I|V,B_i]}{P[T,I'|V,B_i]} \left( \frac{P[T,I|U,B_i]}{P[T,I'|U,B_i]} \right)^{-1}
+$$
+
+is the same for all $i$.
+
+Then logistic regression with multiple predictors again delivers the quantity of interest.
+
+### Example: Correlated vaccinations
+
+When measuring VE for one vaccine (e.g., COVID-19) using a TND, if vaccination status for another vaccine (e.g., flu) is not stratified for in the analysis (i.e., as a predictor in the logistic regression), then the VE estimate will be biased downward.
+
+As a concrete example, assume:
+
+- 25% of people take both vaccine 1 and vaccine 2, and the remaining 75% of people take neither.
+- 25% of pathogen 1-like symptoms are in fact caused by pathogen 2 and that vaccine 2 prevents pathogen 2 symptoms with 50% VE.
+- In the absence of vaccine 2, the unvaccinated and those vaccinated with vaccine 1 would have the same test-negative rate.
+- The true VE for vaccine 1 is 25% (i.e., its risk ratio is $\tfrac{3}{4}$).
+
+We naively use TND to estimate VE for vaccine 1, without accounting for vaccine 2. Among those vaccinated with vaccine 1, vaccine 2 reduces the test-negative rate by $\tfrac{1}{4}\cdot\tfrac{1}{2} = \tfrac{1}{8} = 12.5\%$. This increases the ORE by $1 - \tfrac{1}{1/8} = \tfrac{8}{7}$, from $\tfrac{3}{4}$ to $\tfrac{6}{7}$. Then the estimate VE is $1-\tfrac{6}{7} \approx 14\%$, which is a substantial underestimate.
