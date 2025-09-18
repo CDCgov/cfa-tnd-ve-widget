@@ -106,7 +106,9 @@ Here we show a general treatment, a specific counterexample, and then follow the
 
 ### General derivation
 
-Consider a set of disjoint symptom statuses $\{ S_i \}$. This set can be very large; it is not just "cough" and "cough and 102 degree fever" but instead includes a whole universe of types of coughs, fevers, chills, etc.
+Consider a set of disjoint symptom statuses $\{ S_i \}$. This set can be very large: it need not reference crude categories like "symptomatic" vs. not, or "cough" and "fever," but instead includes a whole universe of types of coughs, fevers, chills, etc.
+
+We emphasize that these statuses are _disjoint_. Every person has is in exactly one symptom state. So if you consider only cough and fever, then you need states like "no symptoms," "cough and not fever," "fever and not cough," and "both cough and fever." The symptom states form a partition, so for every event $X$, we have $P[X] = \sum_i P[X, S_i]$.
 
 These symptoms will determine the probability that a person seeks a test and the probability that, having sought a test, they will receive it (since, in practice, the TND will have some inclusion/exclusion criteria related to symptoms). We do not separately observe test-seeking and test-receiving, so we consider probabilities like $P[T | S_i, V]$ that encapsulate both processes.
 
@@ -202,6 +204,32 @@ $$
 $$
 
 To achieve an unbiased estimate, we must assume that $S_2$ is never tested for or never arises, that is, that we return to the single symptom status assumption.
+
+### Logistic regression won't save this?
+
+See logistic regression math below. Controlling for symptoms in the regression is equivalent to assuming that protection from vaccination is the same for each symptom status, that is, that
+
+$$
+\frac{P[T,I|V,S_i]}{P[T,I'|V,S_i]} \left( \frac{P[T,I|U,S_i]}{P[T,I'|U,S_i]} \right)^{-1}
+$$
+
+is the same for all $i$.
+
+By the conditional independence assumption (testing depends on symptoms, not infection status), this simplifies to
+
+$$
+\frac{P[S_i|I,V]}{P[S_i|I',V]} \left( \frac{P[S_i|I,U]}{P[S_i|I',U]} \right)^{-1}
+$$
+
+Assume that, among the uninfected, vaccination status does not the probability of symptoms: $P[S_i|I',V]=P[S_i|I',U]$ so that this simplifies to
+
+$$
+\frac{P[S_i|I,V]}{P[S_i|I,U]}
+$$
+
+In other words, controlling for symptom status rescues from this bias only if vaccination protects against each kind of symptom equally, which is _a priori_ unlikely.
+
+<!-- TO DO: Think about which symptom statuses we can merge together.  -->
 
 ## Rare disease assumption
 
