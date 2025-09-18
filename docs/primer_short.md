@@ -104,11 +104,19 @@ It is commonly held that TNDs mitigate biases due to differences in testing beha
 
 Here we show a general treatment, a specific counterexample, and then follow the derivation that can be erroneously interpreted as proof that TND accounts for testing behavior.
 
-### General derivation
+### Defining symptom statuses
 
 Consider a set of disjoint symptom statuses $\{ S_i \}$. This set can be very large: it need not reference crude categories like "symptomatic" vs. not, or "cough" and "fever," but instead includes a whole universe of types of coughs, fevers, chills, etc.
 
 We emphasize that these statuses are _disjoint_. Every person has is in exactly one symptom state. So if you consider only cough and fever, then you need states like "no symptoms," "cough and not fever," "fever and not cough," and "both cough and fever." The symptom states form a partition, so for every event $X$, we have $P[X] = \sum_i P[X, S_i]$.
+
+Although the universe of symptom states can be very large, under certain assumptions made below, two symptom statuses $S_i$ and $S_j$ can be merged into one if:
+
+- they are tested for at the same rate; i.e., $P[T|S_i,V]=P[T|S_j,V]$ and $P[T|S_i,U]=P[T|S_j,U]$ and
+- the emerge at the same rate among the infected; i.e., $P[S_i|I,V]=P[S_j|I,V]$ and $P[S_i|I,U]=P[S_j|I,U]$, and
+- the emerge at the same rate among the uninfected; i.e., $P[S_i|I',V]=P[S_j|I',V]$ and $P[S_i|I',U]=P[S_j|I',U]$.
+
+### General derivation
 
 These symptoms will determine the probability that a person seeks a test and the probability that, having sought a test, they will receive it (since, in practice, the TND will have some inclusion/exclusion criteria related to symptoms). We do not separately observe test-seeking and test-receiving, so we consider probabilities like $P[T | S_i, V]$ that encapsulate both processes.
 
