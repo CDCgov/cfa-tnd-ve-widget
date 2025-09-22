@@ -1,4 +1,4 @@
-# Test-negative design: short primer
+# Test-negative design: "short" primer
 
 ## Vaccine efficacy
 
@@ -13,12 +13,11 @@ VE is the fractional reduction in the probability of an adverse outcome due to v
 
 **Proposition: Unbiased TND requires large counts.**
 
-In the simplest derivation, we assume that:
+In the mathematically simplest derivation, we assume that:
 
-- Test performance is perfect.
 - There is some population of $n_V$ vaccinated individuals and $n_U$ unvaccinated individuals that are _a priori_ eligible for inclusion in the TND.
-- Testing is a Poisson process. Each vaccinated individual receives tests for the test-positive condition at rate $\lambda^{T+}_V$ and for the test-negative condition at rate $\lambda^{T-}_V$.
-- Unvaccinated individuals receive tests at analogous rates $\lambda^{T+}_U$ and $\lambda^{T-}_U$.
+- Receiving tests for test-positive and test-negative conditions are each inhomogeneous Poisson processes. Thus, for each individual, the number of positive tests for each vaccinated individual is Poisson-distributed with mean $t^+_V$. Similarly define $t^-_V$, $t^+_U$, and $t^-_U$.
+- Test performance is perfect.
 
 Note that this means that we assume there are no "collisions" between test-positive and test-negative conditions. An individual could theoretically test positive and then test negative one millisecond later.
 
@@ -32,7 +31,7 @@ The data available are a 2x2 table of counts of test results:
 We are interested in the protection provided by the vaccine. In this model, where there are only test-positive and -negative conditions, we are interested in the risk ratio:
 
 $$
-\mathrm{RR} = \frac{\lambda^{T+}_V}{\lambda^{T+}_U}
+\mathrm{RR} = \frac{t^+_V}{t^+_U}
 $$
 
 Consider the odds ratio as an estimator for the risk ratio:
@@ -41,13 +40,13 @@ $$
 \hat{\mathrm{RR}} = \frac{X^+_V X^-_U}{X^-_V X^+_U}
 $$
 
-Because the counts of tests from each person is an i.i.d.Poisson distribution, the total counts of tests are themselves Poisson distributed:
+Because the counts of tests from each person is an i.i.d. Poisson distribution, the total counts of tests are themselves Poisson distributed:
 
 $$
-X^+_V \sim \mathrm{Poisson}(n_V \lambda^{T+}_V D)
+X^+_V \sim \mathrm{Poisson}(n_V t^+_V)
 $$
 
-where $D$ is the duration of the trial. These variables are all independent, so
+These variables are all independent, so
 
 $$
 \mathbb{E}\left[\hat{\mathrm{RR}}\right] = \mathbb{E}[X_V^+] \cdot \mathbb{E}\left[ \frac{1}{X_V^-} \right] \cdot \mathbb{E}[X_U^-] \cdot \mathbb{E}\left[ \frac{1}{X_U^+} \right]
@@ -59,8 +58,8 @@ $$
 \begin{aligned}
 \lim_{n_V, n_U \to \infty} \mathbb{E}\left[\hat{\mathrm{RR}}\right]
 &= \frac{\mathbb{E}[X_V^+] \mathbb{E}[X_U^-]}{\mathbb{E}[X_V^-] \mathbb{E}[X_U^+]} \\
-&= \frac{n_V \lambda^{T+}_V D \cdot n_U \lambda^{T-}_U D}{ n_U \lambda^{T-}_V D \cdot n_V \lambda^{T+}_U D} \\
-&= \frac{\lambda^{T+}_V}{\lambda^{T+}_U} \cdot \frac{\lambda^{T-}_U}{\lambda^{T-}_V}
+&= \frac{n_V t^+_V \cdot n_U t^-_U}{n_V t^-_V \cdot n_U t^+_U} \\
+&= \frac{t^+_V}{t^+_U} \cdot \left( \frac{t^-_V}{t^-_U} \right)^{-1}
 \end{aligned}
 $$
 
@@ -71,10 +70,16 @@ Call this the "odds ratio of expectations" (ORE).
 In this model:
 
 $$
-\mathrm{ORE} = \mathrm{RR} \cdot \frac{\lambda^{T-}_U}{\lambda^{T-}_V}
+\mathrm{ORE} = \mathrm{RR} \cdot \left( \frac{t^-_V}{t^-_U} \right)^{-1}
 $$
 
-Thus, so long as the vaccinated and unvaccinated are tested for test-negative conditions at the same rate, then the TND odds ratio is an unbiased estimator of the relevant VE risk ratio (subject also the requirement that rates be nonzero and in the limit of large populations).
+Thus, so long as:
+
+1. the vaccinated and unvaccinated seek and receive the same average number of negative tests per capita,
+2. $t^-_V > 0$ and $t^-_U > 0$, and
+3. the population is very large,
+
+then the TND odds ratio approaches an unbiased estimator of the relevant VE risk ratio.
 
 ## Conditioning on exposure
 
