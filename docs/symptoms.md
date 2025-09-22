@@ -94,7 +94,7 @@ In general, one cannot conclude that there is simply "symptomic" or "not."
 
 To see why TND cannot generally correct for test-seeking behavior, consider a simple case where there are 3 types of symptoms:
 
-- 0: Neither the vaccinated not unvaccinated seek a test, so that $P[T|S_0,V]=P[T|S_0,U]=0$
+- 0: Neither the vaccinated nor unvaccinated seek a test, so that $P[T|S_0,V]=P[T|S_0,U]=0$
 - 1: Everyone seeks a test, with equal probability $P[T|S_1]$.
 - 2: The vaccinated seek a test; the unvaccinated do not.
 
