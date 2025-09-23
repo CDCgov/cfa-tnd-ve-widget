@@ -101,7 +101,7 @@ $$
 \frac{P[T,I|E,V]}{P[T,I|E,U]} \cdot \frac{\lambda^E_V}{\lambda^E_U} \cdot \frac{\lambda^{T-}_U}{\lambda^{T-}_V}
 $$
 
-Thus, if the vaccinated and unvaccinated have equal exposure rates, then the TND odds ratio will be an unbiased estimate of protection from vaccine _conditioned on exposure_ (subject again to the other assumptions above). If the vaccinated are exposed at a higher rate, then TND will underestimate VE.
+Thus, if the vaccinated and unvaccinated have equal exposure rates, then the TND odds ratio will be an unbiased estimate of protection from vaccine _conditioned on exposure_, that is, that we can estimate the conditional risk ratio $P[T,I|E,V]/P[T,I|E,U]$ rather than the unconditional ratio $P[T,I|V]/P[T,I|U]$. (subject again to the other assumptions above). If the vaccinated are exposed at a higher rate, this will bias the estimated VE downward.
 
 ## Rare disease assumption
 

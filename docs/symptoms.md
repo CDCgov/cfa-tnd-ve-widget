@@ -1,5 +1,7 @@
 # TND does not account for symptoms in general
 
+<!-- TO DO: Note that TND's bias mitigation is something about stratifying into people who seek a test versus who do not. How do we map that concept onto these here? -->
+
 It is commonly held that TNDs mitigate biases due to differences in testing behavior between the vaccinated and unvaccinated. This cannot be generally true: if symptoms information is not part of the analysis, then for the purposes of analysis, testing behavior and disease progression are perfectly confounded. We cannot distinguish how the vaccine reduces symptoms versus how the vaccinated and unvaccinated seek rates at different rates for different symptoms.
 
 Here we show a general treatment, a specific counterexample, and then follow the derivation that can be erroneously interpreted as proof that TND accounts for testing behavior.
